@@ -1,0 +1,39 @@
+<div class="panel panel-primary" style="text-align:center">
+  <div class="panel-heading">
+    {{ title }}
+  </div>
+  <div class="panel-body">
+    <form>
+      <table style="width:100%">        
+        <tr>
+          <td>
+              <div class="form-group">
+                  <label class="col-md-4">Id</label>                  
+                  <ng-template #tipContent><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Id')">{{error.Message}}</div></ng-template>
+                  <input type="text" id="Id" class="form-control" name="Id" [(ngModel)]="loginUser.Id" (ngModelChange)="!validateMe('Id') ? t.open() : t.close()" [ngbTooltip]="tipContent" #t="ngbTooltip" placeholder="Id" />                  
+              </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+              <div class="form-group">
+                  <label class="col-md-4">Password</label>
+                  <ng-template #tipContent1><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Pwd')" >{{error.Message}}</div></ng-template>
+                  <input type="password" id="Pwd" class="form-control" name="Pwd" [(ngModel)]="loginUser.Pwd" (ngModelChange)="!validateMe('Pwd') ? t1.open() : t1.close()" [ngbTooltip]="tipContent1" #t1="ngbTooltip" placeholder="Password" />                                    
+              </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+              <div class="form-group">
+                  <button type="submit" class="btn btn-primary" style="width: 40%; height: 50px;" (click)="login()">Login</button>
+              </div>
+          </td>
+        </tr>
+      </table>                    
+      
+    </form>
+  </div>
+</div>
+
+

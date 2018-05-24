@@ -1,0 +1,67 @@
+<div class="panel panel-primary" style="text-align:center">
+    <div class="panel-heading">
+      {{ title }}
+    </div>
+    <div class="panel-body">
+      <form>
+        <table style="width:100%">        
+          <tr>
+            <td>
+                <div class="form-group">                
+                    <ng-template #tipContent><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Name')">{{error.Message}}</div></ng-template>
+                    <input type="text" id="Name" class="form-control" name="Name" [(ngModel)]="registerUser.Name" (ngModelChange)="!validateMe('Name') ? t.open() : t.close()" [ngbTooltip]="tipContent" #t="ngbTooltip" placeholder="Name" />                  
+                </div>
+            </td>
+          </tr>
+          <tr>
+              <td>
+                  <div class="form-group">                
+                      <ng-template #tipContent1><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('CreditCardNo')">{{error.Message}}</div></ng-template>
+                      <input type="text" id="CreditCardNo" class="form-control" name="CreditCardNo" [(ngModel)]="registerUser.CreditCardNo" (ngModelChange)="!validateMe('CreditCardNo') ? t1.open() : t1.close()" [ngbTooltip]="tipContent1" #t1="ngbTooltip" placeholder="Credit Card Number" />                  
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <div class="form-group">                
+                      <ng-template #tipContent2><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Id')">{{error.Message}}</div></ng-template>
+                      <input type="text" id="Id" class="form-control" name="Id" [(ngModel)]="registerUser.Id" (ngModelChange)="!validateMe('Id') ? t2.open() : t2.close()" [ngbTooltip]="tipContent2" #t2="ngbTooltip" placeholder="Id" />                  
+                  </div>
+              </td>
+          </tr>
+          <tr>
+                <td>
+                    <div class="form-group">                
+                        <ng-template #tipContent5><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Email')">{{error.Message}}</div></ng-template>
+                        <input type="text" id="Email" class="form-control" name="Email" [(ngModel)]="registerUser.Email" (ngModelChange)="!validateMe('Id') ? t5.open() : t5.close()" [ngbTooltip]="tipContent5" #t5="ngbTooltip" placeholder="Email" />                  
+                    </div>
+                </td>
+            </tr>
+          <tr>
+              <td>
+                  <div class="form-group">                
+                      <ng-template #tipContent3><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Password')">{{error.Message}}</div></ng-template>
+                      <input type="password" id="Password" class="form-control" name="Password" [(ngModel)]="registerUser.Password" (ngModelChange)="!validateMe('Password') ? t3.open() : t3.close()" [ngbTooltip]="tipContent3" #t3="ngbTooltip" placeholder="Password" />                  
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <div class="form-group">                
+                      <ng-template #tipContent4><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('ConfirmPassword')">{{error.Message}}</div></ng-template>
+                      <input type="password" id="ConfirmPassword" class="form-control" name="ConfirmPassword" [(ngModel)]="registerUser.ConfirmPassword" (ngModelChange)="!validateMe('ConfirmPassword') ? t4.open() : t4.close()" [ngbTooltip]="tipContent4" #t4="ngbTooltip" placeholder="Confirm Password" />                  
+                  </div>
+              </td>
+          </tr>
+          <tr>
+            <td>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" style="width: 40%; height: 50px;" (click)="register()">Register</button>
+                </div>
+            </td>
+          </tr>
+        </table>                    
+        
+      </form>
+    </div>
+  </div>
