@@ -71,7 +71,9 @@ export class ValidationService implements IValidationService {
 *   This service is injected into the components.
 *   The methods of the service are used for model validation.
 
-### Angular info
+
+
+## Angular info
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1.
 
