@@ -15,7 +15,7 @@ describe('RegisterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ RegisterComponent ],
-      imports: [FormsModule, NgbModule.forRoot(),],
+      imports: [FormsModule, NgbModule.forRoot()],
       providers: [NgbTooltipConfig, ValidationService]
     })
     .compileComponents();

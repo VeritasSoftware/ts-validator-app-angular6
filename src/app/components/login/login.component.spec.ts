@@ -15,7 +15,7 @@ describe('LoginComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LoginComponent ],
-      imports: [FormsModule, NgbModule.forRoot(),],
+      imports: [FormsModule, NgbModule.forRoot()],
       providers: [NgbTooltipConfig, ValidationService]
     })
     .compileComponents();
