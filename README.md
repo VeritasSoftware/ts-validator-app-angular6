@@ -68,8 +68,8 @@ export class ValidationService implements IValidationService {
 
 If you wanted to write your rules only once,
 
-    *   you can create an anonymous function to write the rules.
-    *   use that in both other places (both Sync and Async methods).
+*   you can create an anonymous function to write the rules.
+*   use that in both other places (both Sync and Async methods).
 
 ```typescript
     validateUser(model: User) : ValidationResult {
