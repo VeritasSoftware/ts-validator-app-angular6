@@ -49,8 +49,14 @@ validationResult: ValidationResult;
     //Async
     this.validationResult = await this.validationService.validateUserAsync(this.loginUser);
 
+    this.validationResult.IsValid ?
+      alert("Congrats! Validation passed.") :
+      this.showValidationTooltips();    
+  }
+
+  showValidationTooltips() : void {
     this.showValidationTooltip("Id", this.tooltipId);
-    this.showValidationTooltip("Pwd", this.tooltipPwd); 
+    this.showValidationTooltip("Pwd", this.tooltipPwd);
   }
 
   showValidationTooltip(error: string, tooltip: NgbTooltip): void {    

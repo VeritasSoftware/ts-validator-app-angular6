@@ -48,6 +48,15 @@ export class RegisterComponent implements OnInit {
     }    
   } 
 
+  showValidationTooltips() : void {
+    this.showValidationTooltip("Name", this.tooltipName); 
+    this.showValidationTooltip("CreditCardNo", this.tooltipCreditCardNo); 
+    this.showValidationTooltip("Id", this.tooltipId);
+    this.showValidationTooltip("Password", this.tooltipPwd); 
+    this.showValidationTooltip("ConfirmPassword", this.tooltipConfirmPwd); 
+    this.showValidationTooltip("Email", this.tooltipEmail);
+  }  
+
   validateMe(p: string) {
     this.validationResult = this.validationService.validateRegisterUser(this.registerUser);    
     var errors = this.validationResult.IdentifierStartsWith(p);
@@ -57,12 +66,9 @@ export class RegisterComponent implements OnInit {
   validateForm() {
     this.validationResult = this.validationService.validateRegisterUser(this.registerUser);
 
-    this.showValidationTooltip("Name", this.tooltipName); 
-    this.showValidationTooltip("CreditCardNo", this.tooltipCreditCardNo); 
-    this.showValidationTooltip("Id", this.tooltipId);
-    this.showValidationTooltip("Password", this.tooltipPwd); 
-    this.showValidationTooltip("ConfirmPassword", this.tooltipConfirmPwd); 
-    this.showValidationTooltip("Email", this.tooltipEmail); 
+    this.validationResult.IsValid ?
+      alert("Congrats! Validation passed.") :
+      this.showValidationTooltips();       
   }
 
   register() {
