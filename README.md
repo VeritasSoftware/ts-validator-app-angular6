@@ -66,10 +66,32 @@ export class ValidationService implements IValidationService {
 }
 ```
 
+If you wanted to write your rules only once,
+
+    *   you can create an anonymous function to write the rules.
+    *   use that in both other places (both Sync and Async methods).
+
+```typescript
+    validateUser(model: User) : ValidationResult {
+        return this.validateUserRules(new Validator(model));
+    }  
+
+    async validateUserAsync(model: User) : Promise<ValidationResult> {
+        return await new ValidatorAsync(model).Validate(this.validateUserRules);        
+    }
+    
+    validateUserRules = (validator: Validator<User>) : ValidationResult => {
+        return validator 
+            .NotEmpty(m => m.Id, "Id cannot be empty")
+            .NotEmpty(m => m.Pwd, "Pwd cannot be empty")
+        .Exec();
+    };
+```    
+
 In the Component, 
 
 *   the injected Validation Service is invoked to perform the validation. 
-*   This can be Sync or Async validation.
+*   this can be Sync or Async validation.
 
 ```typescript
   async validateForm() {
