@@ -12,6 +12,10 @@ class Employee {
     Super: Super;
     Email: string;
  }
+
+ class Accountant extends Employee {
+   Code: string;
+ }
  
  class CreditCard {
    Number: number;
@@ -53,6 +57,12 @@ class Employee {
     .Exec();
  }
 
+ var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
+  return validator
+            .NotEmpty(m => m.Code, "Should not be empty")
+        .Exec();
+};
+
 describe('ValidatorTests', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -65,7 +75,7 @@ describe('ValidatorTests', () => {
     
   });
 
-  it('should have no validation errors Sync', () => {
+  it('Employee should have no validation errors Sync', () => {
     var model = new Employee();
     model.Name = "John Doe";
 
@@ -96,7 +106,39 @@ describe('ValidatorTests', () => {
     expect(validationResult.IsValid).toBeTruthy();
   });
 
-  it('should have no validation errors Async', async () => {
+  it('Accountant should have no validation errors Sync', () => {    
+    var accountant = new Accountant();
+    accountant.Code = "ACC001";
+    accountant.Name = "John Doe";
+
+    accountant.Password = "sD4A3";
+    accountant.PreviousPasswords = new Array<string>()     
+    accountant.PreviousPasswords.push("sD4A");
+    accountant.PreviousPasswords.push("sD4A1");
+    accountant.PreviousPasswords.push("sD4A2");
+
+    accountant.CreditCards = new Array<CreditCard>();
+    var masterCard = new CreditCard();
+    masterCard.Number = 5105105105105100;
+    masterCard.Name = "John Doe"
+    var amexCard = new CreditCard();
+    amexCard.Number = 371449635398431;
+    amexCard.Name = "John Doe"
+    accountant.CreditCards.push(masterCard);
+    accountant.CreditCards.push(amexCard);
+
+    accountant.Super = new Super();
+    accountant.Super.Name = "XYZ Super Fund";
+    accountant.Super.Code = "XY1234";
+
+    accountant.Email = "john.doe@xyx.com";
+
+    var validationResult = new Validator(accountant).Base(validateEmployeeRules).Validate(validateAccountantRules); 
+    
+    expect(validationResult.IsValid).toBeTruthy();
+  });
+
+  it('Employee should have no validation errors Async', async () => {
     var model = new Employee();
     model.Name = "John Doe";
 
@@ -125,5 +167,38 @@ describe('ValidatorTests', () => {
     var validationResult = await new Validator(model).ValidateAsync(validateEmployeeRules); 
     
     expect(validationResult.IsValid).toBeTruthy();    
+  });
+
+  it('Accountant should have no validation errors Async', async () => {    
+    var accountant = new Accountant();
+    accountant.Code = "ACC001";
+    accountant.Name = "John Doe";
+
+    accountant.Password = "sD4A3";
+    accountant.PreviousPasswords = new Array<string>()     
+    accountant.PreviousPasswords.push("sD4A");
+    accountant.PreviousPasswords.push("sD4A1");
+    accountant.PreviousPasswords.push("sD4A2");
+
+    accountant.CreditCards = new Array<CreditCard>();
+    var masterCard = new CreditCard();
+    masterCard.Number = 5105105105105100;
+    masterCard.Name = "John Doe"
+    var amexCard = new CreditCard();
+    amexCard.Number = 371449635398431;
+    amexCard.Name = "John Doe"
+    accountant.CreditCards.push(masterCard);
+    accountant.CreditCards.push(amexCard);
+
+    accountant.Super = new Super();
+    accountant.Super.Name = "XYZ Super Fund";
+    accountant.Super.Code = "XY1234";
+
+    accountant.Email = "john.doe@xyx.com";
+
+    var validationResult = await new Validator(accountant).BaseAsync(validateEmployeeRules)
+                                                          .ValidateAsync(validateAccountantRules); 
+    
+    expect(validationResult.IsValid).toBeTruthy();
   });
 });
