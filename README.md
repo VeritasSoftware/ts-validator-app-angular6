@@ -73,7 +73,7 @@ export class ValidationService implements IValidationService {
 *   There are 2 models for the **components** **Login** and **Register**. These **models** are **User** and **RegisterUser**.
 *   The Validation Service creates 2 sync methods to validate these models. These **methods** are **validateUser** and **validateRegisterUser**.
 *   In these methods, the framework class **Validator** is used to lay the validation rules for the models.
-*   In the async **validateUserAsync** method, the framework class ValidatorAsync class is used.
+*   In the async **validateUserAsync** method, the framework class **ValidatorAsync** is used.
 *   This service is injected into the components.
 *   The methods of the service are used for model validation.
 
