@@ -66,7 +66,26 @@ export class ValidationService implements IValidationService {
 }
 ```
 
-**In the above code snippet:**
+In the Component, 
+
+*   the injected Validation Service is invoked to perform the validation. 
+*   This can be Sync or Async validation.
+
+```typescript
+  async validateForm() {
+    //Sync
+    //this.validationResult = this.validationService.validateUser(this.loginUser);
+    //Async
+    this.validationResult = await this.validationService.validateUserAsync(this.loginUser);
+
+    this.validationResult.IsValid ?
+      alert("Congrats! Validation passed.") :
+      this.showValidationTooltips();    
+  }
+```
+
+
+### Summary of above code snippets
 
 *   There is a **Validation Service** in the Angular 6 CLI app.
 *   All business rules around model validation are centralized in this service.
