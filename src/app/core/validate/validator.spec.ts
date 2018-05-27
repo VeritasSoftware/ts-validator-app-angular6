@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IValidator } from './ivalidator';
-import { Validator, ValidatorAsync } from './validator';
+import { Validator } from './validator';
 import { ValidationResult } from '.';
 
 class Employee {
@@ -122,7 +122,7 @@ describe('ValidatorTests', () => {
 
     model.Email = "john.doe@xyx.com";    
 
-    var validationResult = await new ValidatorAsync(model).Validate(validateEmployeeRules); 
+    var validationResult = await new Validator(model).ValidateAsync(validateEmployeeRules); 
     
     expect(validationResult.IsValid).toBeTruthy();    
   });

@@ -16,7 +16,7 @@ import {Injectable} from '@angular/core'
 
 import { IValidationService } from './ivalidation-service'
 import { User, RegisterUser } from '../models/models.component'
-import { IValidator, Validator, ValidationResult, ValidatorAsync } from '../core/validate';
+import { IValidator, Validator, ValidationResult } from '../core/validate';
 
 @Injectable()
 export class ValidationService implements IValidationService {
@@ -26,7 +26,7 @@ export class ValidationService implements IValidationService {
     }  
 
     async validateUserAsync(model: User) : Promise<ValidationResult> {
-        return await new ValidatorAsync(model).Validate(this.validateUserRules);        
+        return await new Validator(model).ValidateAsync(this.validateUserRules);        
     }
     
     validateUserRules = (validator: IValidator<User>) : ValidationResult => {
