@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core'
 
 import { IValidationService } from './ivalidation-service'
 import { User, RegisterUser } from '../models/models.component'
-import { Validator, ValidationResult } from '../core/validate';
+import { Validator, ValidationResult, ValidatorAsync } from '../core/validate';
 
 @Injectable()
 export class ValidationService implements IValidationService {
@@ -12,6 +12,13 @@ export class ValidationService implements IValidationService {
                     .NotEmpty(m => m.Id, "Id cannot be empty")
                     .NotEmpty(m => m.Pwd, "Pwd cannot be empty")
                 .Exec();
+    }  
+
+    async validateUserAsync(model: User) : Promise<ValidationResult> {
+        return await new ValidatorAsync(model).Validate(validator => validator
+                                                            .NotEmpty(m => m.Id, "Id cannot be empty")
+                                                            .NotEmpty(m => m.Pwd, "Pwd cannot be empty")
+                                                        .Exec());        
     }                           
 
     validateRegisterUser(model: RegisterUser) : ValidationResult {

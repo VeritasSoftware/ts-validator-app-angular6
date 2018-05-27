@@ -43,8 +43,11 @@ validationResult: ValidationResult;
     return !(errors != null && errors.length > 0);     
   }
 
-  validateForm() {
-    this.validationResult = this.validationService.validateUser(this.loginUser);
+  async validateForm() {
+    //Sync
+    //this.validationResult = this.validationService.validateUser(this.loginUser);
+    //Async
+    this.validationResult = await this.validationService.validateUserAsync(this.loginUser);
 
     this.showValidationTooltip("Id", this.tooltipId);
     this.showValidationTooltip("Pwd", this.tooltipPwd); 

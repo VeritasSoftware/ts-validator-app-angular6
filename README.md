@@ -16,7 +16,7 @@ import {Injectable} from '@angular/core'
 
 import { IValidationService } from './ivalidation-service'
 import { User, RegisterUser } from '../models/models.component'
-import { Validator, ValidationResult } from '../core/validate';
+import { Validator, ValidationResult, ValidatorAsync } from '../core/validate';
 
 @Injectable()
 export class ValidationService implements IValidationService {
@@ -26,6 +26,13 @@ export class ValidationService implements IValidationService {
                     .NotEmpty(m => m.Id, "Id cannot be empty")
                     .NotEmpty(m => m.Pwd, "Pwd cannot be empty")
                 .Exec();
+    }  
+
+    async validateUserAsync(model: User) : Promise<ValidationResult> {
+        return await new ValidatorAsync(model).Validate(validator => validator
+                                                            .NotEmpty(m => m.Id, "Id cannot be empty")
+                                                            .NotEmpty(m => m.Pwd, "Pwd cannot be empty")
+                                                        .Exec());        
     }                           
 
     validateRegisterUser(model: RegisterUser) : ValidationResult {
@@ -48,7 +55,7 @@ export class ValidationService implements IValidationService {
                     .NotEmpty(m => m.ConfirmPassword, "Confirm Pwd cannot be empty") 
                     .If(m => m.Password != "", validator =>
                                                     validator.For(m => m.Password, passwordValidator => 
-                                                                                        passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid")
+                                                                                        passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])","Password strength is not valid")
                                                                                                          .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3") 
                                                                                                          .Required((m, pwd) => pwd == m.ConfirmPassword, "Password and Confirm Password are not the same")
                                                                                    .Exec()
@@ -64,8 +71,9 @@ export class ValidationService implements IValidationService {
 *   There is a **Validation Service** in the Angular 6 CLI app.
 *   All business rules around model validation are centralized in this service.
 *   There are 2 models for the **components** **Login** and **Register**. These **models** are **User** and **RegisterUser**.
-*   The Validation Service creates 2 methods to validate these models. These **methods** are **validateUser** and **validateRegisterUser**.
+*   The Validation Service creates 2 sync methods to validate these models. These **methods** are **validateUser** and **validateRegisterUser**.
 *   In these methods, the framework class **Validator** is used to lay the validation rules for the models.
+*   In the async **validateUserAsync** method, the framework class ValidatorAsync class is used.
 *   This service is injected into the components.
 *   The methods of the service are used for model validation.
 
