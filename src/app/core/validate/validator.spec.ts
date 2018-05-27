@@ -133,7 +133,8 @@ describe('ValidatorTests', () => {
 
     accountant.Email = "john.doe@xyx.com";
 
-    var validationResult = new Validator(accountant).Base(validateEmployeeRules).Validate(validateAccountantRules); 
+    var validationResult = new Validator(accountant).Base(validateEmployeeRules)
+                                                    .Validate(validateAccountantRules); 
     
     expect(validationResult.IsValid).toBeTruthy();
   });
