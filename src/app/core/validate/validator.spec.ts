@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { IValidator } from './ivalidator';
 import { Validator, ValidatorAsync } from './validator';
+import { ValidationResult } from '.';
 
 class Employee {
     Name: string;
@@ -19,6 +21,36 @@ class Employee {
  class Super {
     Name: string;
     Code: string;
+ }
+
+ var validateEmployeeRules = (validator: IValidator<Employee>) : ValidationResult => {
+    return validator                              
+          .NotEmpty(m => m.Name, "Should not be empty", "Employee.Name.Empty")
+          .NotNull(m => m.CreditCards, "Should not be null", "CreditCard.Null")
+          .NotNull(m => m.Super, "Should not be null", "Super.Null")
+          .NotEmpty(m => m.Email, "Should not be empty", "Employee.Email.Empty")
+          .If(m => m.Super != null, validator => validator
+                                                          .NotEmpty(m => m.Super.Name, "Should not be empty", "Super.Code.Empty")
+                                                          .Matches(m => m.Super.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
+                                                .Exec())
+          .If(m => m.Email != '', validator => 
+                                              validator.Email(m => m.Email, "Should not be invalid", "Employee.Email.Invalid")
+                                  .Exec())  
+          .Required(m => m.CreditCards, (m, creditCards) => creditCards.length > 0, "Must have atleast 1 credit card", "CreditCard.Required")
+          .If(m => m.CreditCards != null && m.CreditCards.length > 0, 
+                      validator => validator
+                                          .ForEach(m => m.CreditCards, validator => 
+                                                                            validator.CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")                                                                                         
+                                                                      .Exec())
+                                  .Exec())
+        .If(m => m.Password != '', validator => 
+                                        validator.For(m => m.Password, passwordValidator =>
+                                                                          passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid")
+                                                                                           .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3")
+                                                                                           .Required((m, pwd) => !m.PreviousPasswords.some(prevPwd => prevPwd == pwd), "Password is already used")
+                                                                      .Exec())
+                                        .Exec())                                                                                                                    
+    .Exec();
  }
 
 describe('ValidatorTests', () => {
@@ -59,33 +91,7 @@ describe('ValidatorTests', () => {
 
     model.Email = "john.doe@xyx.com";
 
-    var validationResult = new Validator(model)                              
-                                .NotEmpty(m => m.Name, "Should not be empty", "Employee.Name.Empty")
-                                .NotNull(m => m.CreditCards, "Should not be null", "CreditCard.Null")
-                                .NotNull(m => m.Super, "Should not be null", "Super.Null")
-                                .NotEmpty(m => m.Email, "Should not be empty", "Employee.Email.Empty")
-                                .If(m => m.Super != null, validator => validator
-                                                                                .NotEmpty(m => m.Super.Name, "Should not be empty", "Super.Code.Empty")
-                                                                                .Matches(m => m.Super.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
-                                                                      .Exec())
-                                .If(m => m.Email != '', validator => 
-                                                                    validator.Email(m => m.Email, "Should not be invalid", "Employee.Email.Invalid")
-                                                        .Exec())  
-                                .Required(m => m.CreditCards, (m, creditCards) => creditCards.length > 0, "Must have atleast 1 credit card", "CreditCard.Required")
-                                .If(m => m.CreditCards != null && m.CreditCards.length > 0, 
-                                            validator => validator
-                                                                .ForEach(m => m.CreditCards, validator => 
-                                                                                                  validator.CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")                                                                                         
-                                                                                            .Exec())
-                                                        .Exec())
-                               .If(m => m.Password != '', validator => 
-                                                              validator.For(m => m.Password, passwordValidator =>
-                                                                                                passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid")
-                                                                                                                 .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3")
-                                                                                                                 .Required((m, pwd) => !m.PreviousPasswords.some(prevPwd => prevPwd == pwd), "Password is already used")
-                                                                                             .Exec())
-                                                              .Exec())                                                                                                                    
-                            .Exec(); 
+    var validationResult = new Validator(model).Validate(validateEmployeeRules); 
     
     expect(validationResult.IsValid).toBeTruthy();
   });
@@ -116,33 +122,7 @@ describe('ValidatorTests', () => {
 
     model.Email = "john.doe@xyx.com";    
 
-    var validationResult = await new ValidatorAsync(model).Validate(validator => validator                              
-                                      .NotEmpty(m => m.Name, "Should not be empty", "Employee.Name.Empty")
-                                      .NotNull(m => m.CreditCards, "Should not be null", "CreditCard.Null")
-                                      .NotNull(m => m.Super, "Should not be null", "Super.Null")
-                                      .NotEmpty(m => m.Email, "Should not be empty", "Employee.Email.Empty")
-                                      .If(m => m.Super != null, validator => validator
-                                                                                      .NotEmpty(m => m.Super.Name, "Should not be empty", "Super.Code.Empty")
-                                                                                      .Matches(m => m.Super.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
-                                                                            .Exec())
-                                      .If(m => m.Email != '', validator => 
-                                                                          validator.Email(m => m.Email, "Should not be invalid", "Employee.Email.Invalid")
-                                                              .Exec())  
-                                      .Required(m => m.CreditCards, (m, creditCards) => creditCards.length > 0, "Must have atleast 1 credit card", "CreditCard.Required")
-                                      .If(m => m.CreditCards != null && m.CreditCards.length > 0, 
-                                                  validator => validator
-                                                                      .ForEach(m => m.CreditCards, validator => 
-                                                                                                        validator.CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")                                                                                         
-                                                                                                  .Exec())
-                                                              .Exec())
-                                    .If(m => m.Password != '', validator => 
-                                                                    validator.For(m => m.Password, passwordValidator =>
-                                                                                                      passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid")
-                                                                                                                       .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3")
-                                                                                                                       .Required((m, pwd) => !m.PreviousPasswords.some(prevPwd => prevPwd == pwd), "Password is already used")
-                                                                                                  .Exec())
-                                                                    .Exec())                                                                                                                    
-                                  .Exec()); 
+    var validationResult = await new ValidatorAsync(model).Validate(validateEmployeeRules); 
     
     expect(validationResult.IsValid).toBeTruthy();    
   });

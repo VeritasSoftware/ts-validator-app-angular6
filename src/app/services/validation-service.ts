@@ -2,27 +2,28 @@ import {Injectable} from '@angular/core'
 
 import { IValidationService } from './ivalidation-service'
 import { User, RegisterUser } from '../models/models.component'
-import { Validator, ValidationResult, ValidatorAsync } from '../core/validate';
+import { IValidator, Validator, ValidationResult, ValidatorAsync } from '../core/validate';
 
 @Injectable()
 export class ValidationService implements IValidationService {
     
     validateUser(model: User) : ValidationResult {
-        return new Validator(model)
-                    .NotEmpty(m => m.Id, "Id cannot be empty")
-                    .NotEmpty(m => m.Pwd, "Pwd cannot be empty")
-                .Exec();
+        return new Validator(model).Validate(this.validateUserRules);
     }  
 
     async validateUserAsync(model: User) : Promise<ValidationResult> {
-        return await new ValidatorAsync(model).Validate(validator => validator
-                                                            .NotEmpty(m => m.Id, "Id cannot be empty")
-                                                            .NotEmpty(m => m.Pwd, "Pwd cannot be empty")
-                                                        .Exec());        
-    }                           
+        return await new ValidatorAsync(model).Validate(this.validateUserRules);        
+    }
+    
+    validateUserRules = (validator: IValidator<User>) : ValidationResult => {
+        return validator 
+            .NotEmpty(m => m.Id, "Id cannot be empty")
+            .NotEmpty(m => m.Pwd, "Pwd cannot be empty")
+        .Exec();
+    };
 
     validateRegisterUser(model: RegisterUser) : ValidationResult {
-        return new Validator(model)
+        return new Validator(model).Validate(validator => validator
                     .NotEmpty(m => m.Name, "Name cannot be empty")
                     .NotEmpty(m => m.CreditCardNo, "Credit Card Number cannot be empty")                    
                     .If(m => m.CreditCardNo != "", validator =>
@@ -47,6 +48,6 @@ export class ValidationService implements IValidationService {
                                                                                    .Exec()
                                                                  )
                                                .Exec())                    
-                .Exec();
+                .Exec());
     }
 }
