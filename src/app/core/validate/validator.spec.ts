@@ -133,7 +133,7 @@ describe('ValidatorTests', () => {
 
     accountant.Email = "john.doe@xyx.com";
 
-    var validationResult = new Validator(accountant).Base(validateEmployeeRules)
+    var validationResult = new Validator(accountant).ValidateBase(validateEmployeeRules)
                                                     .Validate(validateAccountantRules); 
     
     expect(validationResult.IsValid).toBeTruthy();
@@ -197,7 +197,7 @@ describe('ValidatorTests', () => {
 
     accountant.Email = "john.doe@xyx.com";
 
-    var validationResult = await new Validator(accountant).BaseAsync(validateEmployeeRules)
+    var validationResult = await new Validator(accountant).ValidateBaseAsync(validateEmployeeRules)
                                                           .ValidateAsync(validateAccountantRules); 
     
     expect(validationResult.IsValid).toBeTruthy();
