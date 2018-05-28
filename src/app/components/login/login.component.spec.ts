@@ -5,12 +5,13 @@ import { FormsModule } from '@angular/forms';
 
 import { LoginComponent } from './login.component';
 import { ValidationService } from '../../services/validation-service';
+import { User } from '../../models';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let ngbTooltipConfig: NgbTooltipConfig;
-  let validationService: ValidationService;  
+  let validationService: ValidationService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -23,13 +24,27 @@ describe('LoginComponent', () => {
 
   beforeEach(() => {
     ngbTooltipConfig = TestBed.get(NgbTooltipConfig);
-    validationService = TestBed.get(ValidationService);    
+    validationService = TestBed.get(ValidationService);                        
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });  
 
   it('should create', () => {
+    expect(component).toBeTruthy();    
+  }); 
+  
+  it('validateForm is false', async () => {
     expect(component).toBeTruthy();
-  });  
+    component.loginUser = new User("", "");
+    await component.validateForm();
+    expect(component.validationResult.IsValid).toBeFalsy();
+  }); 
+
+  it('validateForm is true', async () => {
+    expect(component).toBeTruthy();
+    component.loginUser = new User("xyz", "abc");
+    await component.validateForm();
+    expect(component.validationResult.IsValid).toBeTruthy();
+  }); 
 });
