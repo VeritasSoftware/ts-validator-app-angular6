@@ -241,7 +241,7 @@ describe('ValidatorTests', () => {
     expect(validationResult.Errors[0].Message == "Should not be empty").toBeTruthy();
   });
 
-  it('Accountant should have 1 validation error from base model Employee - Async', async () => {    
+  it('Accountant should have 1 validation error from base Employee model - Async', async () => {    
     var accountant = new Accountant();
     accountant.Code = "ACC001";
     accountant.Name = "John Doe";
@@ -279,7 +279,7 @@ describe('ValidatorTests', () => {
     expect(validationResult.Errors[0].Message == "Should not be invalid").toBeTruthy();
   }); 
   
-  it('Accountant should have 1 validation error from base model Employee and 1 error from Accountant model - Async', async () => {    
+  it('Accountant should have 1 validation error from base Employee model and 1 error from Accountant model - Async', async () => {    
     var accountant = new Accountant();
     accountant.Code = "";
     accountant.Name = "John Doe";
@@ -312,7 +312,7 @@ describe('ValidatorTests', () => {
     expect(validationResult.IsValid).toBeFalsy();
     expect(validationResult.Errors.length == 2).toBeTruthy();    
 
-    //Error from base model Employee
+    //Error from base Employee model
     expect(validationResult.Errors[0].Value == "john.doexyx.com").toBeTruthy();
     expect(validationResult.Errors[0].Identifier == "Employee.Email.Invalid").toBeTruthy();
     expect(validationResult.Errors[0].Message == "Should not be invalid").toBeTruthy();
