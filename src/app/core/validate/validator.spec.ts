@@ -75,7 +75,7 @@ describe('ValidatorTests', () => {
     
   });
 
-  it('Employee should have no validation errors Sync', () => {
+  it('Employee should have no validation errors - Sync', () => {
     var model = new Employee();
     model.Name = "John Doe";
 
@@ -106,7 +106,7 @@ describe('ValidatorTests', () => {
     expect(validationResult.IsValid).toBeTruthy();
   });
 
-  it('Accountant should have no validation errors Sync', () => {    
+  it('Accountant should have no validation errors - Sync', () => {    
     var accountant = new Accountant();
     accountant.Code = "ACC001";
     accountant.Name = "John Doe";
@@ -139,7 +139,7 @@ describe('ValidatorTests', () => {
     expect(validationResult.IsValid).toBeTruthy();
   });
 
-  it('Employee should have no validation errors Async', async () => {
+  it('Employee should have no validation errors - Async', async () => {
     var model = new Employee();
     model.Name = "John Doe";
 
@@ -170,7 +170,7 @@ describe('ValidatorTests', () => {
     expect(validationResult.IsValid).toBeTruthy();    
   });
 
-  it('Accountant should have no validation errors Async', async () => {    
+  it('Accountant should have no validation errors - Async', async () => {    
     var accountant = new Accountant();
     accountant.Code = "ACC001";
     accountant.Name = "John Doe";
@@ -202,4 +202,123 @@ describe('ValidatorTests', () => {
     
     expect(validationResult.IsValid).toBeTruthy();
   });
+
+  it('Accountant should have 1 validation error from Accountant model - Async', async () => {    
+    var accountant = new Accountant();
+    accountant.Code = "";
+    accountant.Name = "John Doe";
+
+    accountant.Password = "sD4A3";
+    accountant.PreviousPasswords = new Array<string>()     
+    accountant.PreviousPasswords.push("sD4A");
+    accountant.PreviousPasswords.push("sD4A1");
+    accountant.PreviousPasswords.push("sD4A2");
+
+    accountant.CreditCards = new Array<CreditCard>();
+    var masterCard = new CreditCard();
+    masterCard.Number = 5105105105105100;
+    masterCard.Name = "John Doe"
+    var amexCard = new CreditCard();
+    amexCard.Number = 371449635398431;
+    amexCard.Name = "John Doe"
+    accountant.CreditCards.push(masterCard);
+    accountant.CreditCards.push(amexCard);
+
+    accountant.Super = new Super();
+    accountant.Super.Name = "XYZ Super Fund";
+    accountant.Super.Code = "XY1234";
+
+    accountant.Email = "john.doe@xyx.com";
+
+    var validationResult = await new Validator(accountant).ValidateBaseAsync(validateEmployeeRules)
+                                                          .ValidateAsync(validateAccountantRules); 
+    
+    expect(validationResult.IsValid).toBeFalsy();
+    expect(validationResult.Errors.length == 1).toBeTruthy();
+
+    expect(validationResult.Errors[0].Value == "").toBeTruthy();
+    expect(validationResult.Errors[0].Identifier == "Code").toBeTruthy();
+    expect(validationResult.Errors[0].Message == "Should not be empty").toBeTruthy();
+  });
+
+  it('Accountant should have 1 validation error from base model Employee - Async', async () => {    
+    var accountant = new Accountant();
+    accountant.Code = "ACC001";
+    accountant.Name = "John Doe";
+
+    accountant.Password = "sD4A3";
+    accountant.PreviousPasswords = new Array<string>()     
+    accountant.PreviousPasswords.push("sD4A");
+    accountant.PreviousPasswords.push("sD4A1");
+    accountant.PreviousPasswords.push("sD4A2");
+
+    accountant.CreditCards = new Array<CreditCard>();
+    var masterCard = new CreditCard();
+    masterCard.Number = 5105105105105100;
+    masterCard.Name = "John Doe"
+    var amexCard = new CreditCard();
+    amexCard.Number = 371449635398431;
+    amexCard.Name = "John Doe"
+    accountant.CreditCards.push(masterCard);
+    accountant.CreditCards.push(amexCard);
+
+    accountant.Super = new Super();
+    accountant.Super.Name = "XYZ Super Fund";
+    accountant.Super.Code = "XY1234";
+
+    accountant.Email = "john.doexyx.com";
+
+    var validationResult = await new Validator(accountant).ValidateBaseAsync(validateEmployeeRules)
+                                                          .ValidateAsync(validateAccountantRules); 
+    
+    expect(validationResult.IsValid).toBeFalsy();
+    expect(validationResult.Errors.length == 1).toBeTruthy();
+
+    expect(validationResult.Errors[0].Value == "john.doexyx.com").toBeTruthy();
+    expect(validationResult.Errors[0].Identifier == "Employee.Email.Invalid").toBeTruthy();
+    expect(validationResult.Errors[0].Message == "Should not be invalid").toBeTruthy();
+  }); 
+  
+  it('Accountant should have 1 validation error from base model Employee and 1 error from Accountant model - Async', async () => {    
+    var accountant = new Accountant();
+    accountant.Code = "";
+    accountant.Name = "John Doe";
+
+    accountant.Password = "sD4A3";
+    accountant.PreviousPasswords = new Array<string>()     
+    accountant.PreviousPasswords.push("sD4A");
+    accountant.PreviousPasswords.push("sD4A1");
+    accountant.PreviousPasswords.push("sD4A2");
+
+    accountant.CreditCards = new Array<CreditCard>();
+    var masterCard = new CreditCard();
+    masterCard.Number = 5105105105105100;
+    masterCard.Name = "John Doe"
+    var amexCard = new CreditCard();
+    amexCard.Number = 371449635398431;
+    amexCard.Name = "John Doe"
+    accountant.CreditCards.push(masterCard);
+    accountant.CreditCards.push(amexCard);
+
+    accountant.Super = new Super();
+    accountant.Super.Name = "XYZ Super Fund";
+    accountant.Super.Code = "XY1234";
+
+    accountant.Email = "john.doexyx.com";
+
+    var validationResult = await new Validator(accountant).ValidateBaseAsync(validateEmployeeRules)
+                                                          .ValidateAsync(validateAccountantRules); 
+    
+    expect(validationResult.IsValid).toBeFalsy();
+    expect(validationResult.Errors.length == 2).toBeTruthy();    
+
+    //Error from base model Employee
+    expect(validationResult.Errors[0].Value == "john.doexyx.com").toBeTruthy();
+    expect(validationResult.Errors[0].Identifier == "Employee.Email.Invalid").toBeTruthy();
+    expect(validationResult.Errors[0].Message == "Should not be invalid").toBeTruthy();
+    //Error from Accountant model
+    expect(validationResult.Errors[1].Value == "").toBeTruthy();
+    expect(validationResult.Errors[1].Identifier == "Code").toBeTruthy();
+    expect(validationResult.Errors[1].Message == "Should not be empty").toBeTruthy();
+  }); 
 });
