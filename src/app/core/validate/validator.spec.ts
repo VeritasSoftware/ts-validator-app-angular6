@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IValidator } from './ivalidator';
 import { Validator } from './validator';
-import { ValidationResult } from '.';
+import { ValidationResult } from './validation-result';
 
 class Employee {
     Name: string;
@@ -63,7 +63,7 @@ class Employee {
         .Exec();
 };
 
-describe('ValidatorTests', () => {
+describe('Validator Tests', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: []
