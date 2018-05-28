@@ -55,7 +55,7 @@ class Employee {
                                                                       .Exec())
                                         .Exec())                                                                                                                    
     .Exec();
- }
+ };
 
  var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
   return validator
