@@ -92,8 +92,9 @@ In the Component,
 *   All business rules around model validation are centralized in this service.
 *   There are 2 models for the **components** **Login** and **Register**. These **models** are **User** and **RegisterUser**.
 *   The Validation Service creates 2 sync methods to validate these models. These **methods** are **validateUser** and **validateRegisterUser**.
-*   In these methods, the framework class **Validator** is used to lay the validation rules for the models.
-*   In the async **validateUserAsync** method, the framework class **ValidatorAsync** is used.
+*   In these methods, the framework interface **IValidator<T>** is used to lay the validation rules for the models.
+*   In the sync **validateUser** method, the framework method **Validate** is used.
+*   In the async **validateUserAsync** method, the framework method **ValidateAsync** is used.
 *   This service is injected into the components.
 *   The methods of the service are used for model validation.
 
