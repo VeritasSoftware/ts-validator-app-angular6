@@ -28,6 +28,14 @@ export class ValidationService implements IValidationService {
     async validateUserAsync(model: User) : Promise<ValidationResult> {
         return await new Validator(model).ValidateAsync(this.validateUserRules);        
     }
+
+    validateRegisterUser(model: RegisterUser) : ValidationResult {
+        return new Validator(model).Validate(this.validateRegisterUserRules);
+    }
+
+    async validateRegisterUserAsync(model: RegisterUser) : Promise<ValidationResult> {
+        return await new Validator(model).ValidateAsync(this.validateRegisterUserRules);
+    }
     
     validateUserRules = (validator: IValidator<User>) : ValidationResult => {
         return validator 
@@ -36,34 +44,34 @@ export class ValidationService implements IValidationService {
         .Exec();
     };
 
-    validateRegisterUser(model: RegisterUser) : ValidationResult {
-        return new Validator(model).Validate(validator => validator
-                    .NotEmpty(m => m.Name, "Name cannot be empty")
-                    .NotEmpty(m => m.CreditCardNo, "Credit Card Number cannot be empty")                    
-                    .If(m => m.CreditCardNo != "", validator =>
-                                                        validator.For(m => m.CreditCardNo, creditCardValidator =>
-                                                                                                creditCardValidator.Length(13, 19, "Credit Card Number length is invalid")
-                                                                                                                   .CreditCard("Credit Card Number is invalid")
-                                                                                            .Exec()
-                                                                     )                                                                
-                                                    .Exec())
-                    .NotEmpty(m => m.Id, "Id cannot be empty")
-                    .NotEmpty(m => m.Email, "Email cannot be empty")
-                    .If(m => m.Email != "", validator =>
-                                                        validator.Email(m => m.Email, "Email is invalid")
+    validateRegisterUserRules = (validator: IValidator<RegisterUser>) : ValidationResult => {
+        return validator
+            .NotEmpty(m => m.Name, "Name cannot be empty")
+            .NotEmpty(m => m.CreditCardNo, "Credit Card Number cannot be empty")                    
+            .If(m => m.CreditCardNo != "", validator =>
+                                                validator.For(m => m.CreditCardNo, creditCardValidator =>
+                                                                                        creditCardValidator.Length(13, 19, "Credit Card Number length is invalid")
+                                                                                                           .CreditCard("Credit Card Number is invalid")
+                                                                                    .Exec()
+                                                             )                                                                
                                             .Exec())
-                    .NotEmpty(m => m.Password, "Pwd cannot be empty")
-                    .NotEmpty(m => m.ConfirmPassword, "Confirm Pwd cannot be empty") 
-                    .If(m => m.Password != "", validator =>
-                                                    validator.For(m => m.Password, passwordValidator => 
-                                                                                        passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid")
-                                                                                                         .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3") 
-                                                                                                         .Required((m, pwd) => pwd == m.ConfirmPassword, "Password and Confirm Password are not the same")
-                                                                                   .Exec()
-                                                                 )
-                                               .Exec())                    
-                .Exec());
-    }
+            .NotEmpty(m => m.Id, "Id cannot be empty")
+            .NotEmpty(m => m.Email, "Email cannot be empty")
+            .If(m => m.Email != "", validator =>
+                                                validator.Email(m => m.Email, "Email is invalid")
+                                    .Exec())
+            .NotEmpty(m => m.Password, "Pwd cannot be empty")
+            .NotEmpty(m => m.ConfirmPassword, "Confirm Pwd cannot be empty") 
+            .If(m => m.Password != "", validator =>
+                                            validator.For(m => m.Password, passwordValidator => 
+                                                                                passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid")
+                                                                                                 .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3") 
+                                                                                                 .Required((m, pwd) => pwd == m.ConfirmPassword, "Password and Confirm Password are not the same")
+                                                                          .Exec()
+                                                         )
+                                      .Exec())                    
+        .Exec();
+    };    
 }
 ```
 
@@ -91,13 +99,13 @@ In the Component,
 *   There is a **Validation Service** in the Angular 6 CLI app.
 *   All business rules around model validation are centralized in this service.
 *   There are 2 models for the **components** **Login** and **Register**. These **models** are **User** and **RegisterUser**.
-*   The Validation Service creates 2 sync methods to validate these models. These **methods** are **validateUser** and **validateRegisterUser**.
-*   In these methods, the framework interface **IValidator\<T\>** is used to lay the validation rules for the models.
-*   In the sync **validateUser** method, the framework method **Validate** is used.
-*   In the async **validateUserAsync** method, the framework method **ValidateAsync** is used.
+*   The framework interface **IValidator\<T\>** is used to lay the validation rules for these models.
+*   The Validation Service creates 2 sync and 2 async methods to validate these models. 
+*   The sync **methods** are **validateUser** and **validateRegisterUser**. The async ones are **validateUserAsync** and **validateRegisterUserAsync**.
+*   In the sync methods, the framework method **Validate** is used.
+*   In the async methods, the framework method **ValidateAsync** is used.
 *   This service is injected into the components.
 *   The methods of the service are used for model validation.
-
 
 
 ## Angular info
