@@ -10,6 +10,7 @@
 
 *   The business rules around model validation remain centralized in the validation service.
 *   This service can be injected into any component. 
+*   You can unit test the business rules by unit testing the service.
 
  ```typescript
 import {Injectable} from '@angular/core'
@@ -106,6 +107,33 @@ In the Component,
 *   In the async methods, the framework method **ValidateAsync** is used.
 *   This service is injected into the components.
 *   The methods of the service are used for model validation.
+
+### Validation Service unit test
+
+*   You can unit test the business rules by unit testing the validation service.
+
+```typescript
+  it('User should have 2 validation errors - Async', async () => {
+    var model = new User("", "");
+    
+    //Get Validation Service
+    validationService = TestBed.get(ValidationService);
+
+    var validationResult = await validationService.validateUserAsync(model);
+    
+    expect(validationResult.IsValid).toBeFalsy();
+    expect(validationResult.Errors.length == 2).toBeTruthy();
+
+    //Errors
+    expect(validationResult.Errors[0].Value == "").toBeTruthy();
+    expect(validationResult.Errors[0].Identifier == "Id").toBeTruthy();
+    expect(validationResult.Errors[0].Message == "Id cannot be empty").toBeTruthy();
+    
+    expect(validationResult.Errors[1].Value == "").toBeTruthy();
+    expect(validationResult.Errors[1].Identifier == "Pwd").toBeTruthy();
+    expect(validationResult.Errors[1].Message == "Pwd cannot be empty").toBeTruthy();
+  }); 
+```
 
 
 ## Angular info
