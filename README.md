@@ -8,8 +8,10 @@
 | --- | --- |
 | ![Login initial](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Login_1.jpg) | ![Login validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Login_2.jpg) | 
 
-*   The business rules around model validation remain centralized in the validation service.
-*   This service can be injected into any component. 
+*   The business rules around validation are separated from the components.
+*   The business rules are centralized in the validation service.
+*   The service is re-usable.
+*   The service can be injected into any component. 
 *   You can unit test the business rules by unit testing the service.
 
  ```typescript
