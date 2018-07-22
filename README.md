@@ -8,6 +8,8 @@
 | --- | --- |
 | ![Login initial](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Login_1.jpg) | ![Login validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Login_2.jpg) | 
 
+The app uses a **Service oriented approach to validation**, with the below advantages:
+
 *   The business rules around validation are separated from the components.
 *   The business rules are centralized in the validation service.
 *   The service is re-usable.
