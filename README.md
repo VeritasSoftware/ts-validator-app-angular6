@@ -117,7 +117,6 @@ In the Component,
                     [ngbTooltip]="tipContent" 
                     #t="ngbTooltip" 
                     placeholder="Id" />                  
-        </div>                  
         </div>
 ```
 
