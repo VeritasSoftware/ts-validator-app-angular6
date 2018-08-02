@@ -110,13 +110,14 @@ In the Component,
                     type="text" 
                     id="Id" 
                     class="form-control" 
-                    name="Id" 
-                    [ngClass]="validationResult.IdentifierStartsWith('Id').length > 0 ? 'validation-failure' : 'validation_success'" 
+                    name="Id"                     
                     [(ngModel)]="loginUser.Id" 
                     (ngModelChange)="!validateMe('Id') ? t.open() : t.close()" 
+                    (ngModelChange)="!validateMe('Id') ? document.getElementById('Id').className = 'validation-success' : document.getElementById('Id').className = 'validation-failure'" 
                     [ngbTooltip]="tipContent" 
                     #t="ngbTooltip" 
                     placeholder="Id" />                  
+        </div>                  
         </div>
 ```
 

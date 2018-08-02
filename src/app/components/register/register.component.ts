@@ -17,7 +17,7 @@ import { ValidationService } from '../../services/validation-service';
 export class RegisterComponent implements OnInit {
   title: string = "Register"
   registerUser : RegisterUser;
-  validationResult: ValidationResult;
+  validationResult: ValidationResult = null;
 
    @ViewChild('t') public tooltipName: NgbTooltip;
    @ViewChild('t1') public tooltipCreditCardNo: NgbTooltip;

@@ -19,7 +19,7 @@ loginUser : User;
 Id: string;
 Pwd: string;
 title: string = "Login"
-validationResult: ValidationResult;
+validationResult: ValidationResult = null;
 
    @ViewChild('t') public tooltipId: NgbTooltip;
    @ViewChild('t1') public tooltipPwd: NgbTooltip;
