@@ -6,7 +6,12 @@
         <form>
             <p>Register</p>
             <div class="form-group">                
-                <ng-template #tipContent><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Name')">{{error.Message}}</div></ng-template>
+                <ng-template #tipContent>
+                    <div 
+                        class="tooltip-inner" 
+                        *ngFor="let error of validationResult.IdentifierStartsWith('Name')">{{error.Message}}
+                    </div>
+                </ng-template>
                 <input 
                         type="text" 
                         id="Name" 
@@ -20,7 +25,12 @@
                         placeholder="Name" />                  
             </div>
             <div class="form-group">                
-                <ng-template #tipContent1><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('CreditCardNo')">{{error.Message}}</div></ng-template>
+                <ng-template #tipContent1>
+                    <div 
+                        class="tooltip-inner" 
+                        *ngFor="let error of validationResult.IdentifierStartsWith('CreditCardNo')">{{error.Message}}
+                    </div>
+                </ng-template>
                 <input 
                         type="text" 
                         id="CreditCardNo" 
@@ -34,7 +44,12 @@
                         placeholder="Credit Card Number" />                  
             </div>            
             <div class="form-group">                
-                <ng-template #tipContent2><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Id')">{{error.Message}}</div></ng-template>
+                <ng-template #tipContent2>
+                    <div 
+                        class="tooltip-inner" 
+                        *ngFor="let error of validationResult.IdentifierStartsWith('Id')">{{error.Message}}
+                    </div>
+                </ng-template>
                 <input 
                         type="text" 
                         id="Id" 
@@ -48,7 +63,12 @@
                         placeholder="Id" />                  
             </div>            
             <div class="form-group">                
-                <ng-template #tipContent5><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Email')">{{error.Message}}</div></ng-template>
+                <ng-template #tipContent5>
+                    <div 
+                        class="tooltip-inner" 
+                        *ngFor="let error of validationResult.IdentifierStartsWith('Email')">{{error.Message}}
+                    </div>
+                </ng-template>
                 <input 
                         type="text" 
                         id="Email" 
@@ -62,7 +82,12 @@
                         placeholder="Email" />                  
             </div>
             <div class="form-group">                
-                <ng-template #tipContent3><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Password')">{{error.Message}}</div></ng-template>
+                <ng-template #tipContent3>
+                    <div 
+                        class="tooltip-inner" 
+                        *ngFor="let error of validationResult.IdentifierStartsWith('Password')">{{error.Message}}
+                    </div>
+                </ng-template>
                 <input 
                         type="password" 
                         id="Password" 
@@ -76,7 +101,12 @@
                         placeholder="Password" />                  
             </div>
             <div class="form-group">                
-                <ng-template #tipContent4><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('ConfirmPassword')">{{error.Message}}</div></ng-template>
+                <ng-template #tipContent4>
+                    <div 
+                        class="tooltip-inner" 
+                        *ngFor="let error of validationResult.IdentifierStartsWith('ConfirmPassword')">{{error.Message}}
+                    </div>
+                </ng-template>
                 <input 
                         type="password" 
                         id="ConfirmPassword" 

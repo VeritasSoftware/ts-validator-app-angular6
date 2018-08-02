@@ -97,6 +97,28 @@ In the Component,
       this.showValidationTooltips();    
   }
 ```
+```html
+        <div class="form-group">
+            <label class="col-md-4">Id</label>                  
+            <ng-template #tipContent>
+                <div 
+                    class="tooltip-inner" 
+                    *ngFor="let error of validationResult.IdentifierStartsWith('Id')">{{error.Message}}
+                </div>
+            </ng-template>
+            <input 
+                    type="text" 
+                    id="Id" 
+                    class="form-control" 
+                    name="Id" 
+                    [ngClass]="validationResult.IdentifierStartsWith('Id').length > 0 ? 'validation-failure' : 'validation_success'" 
+                    [(ngModel)]="loginUser.Id" 
+                    (ngModelChange)="!validateMe('Id') ? t.open() : t.close()" 
+                    [ngbTooltip]="tipContent" 
+                    #t="ngbTooltip" 
+                    placeholder="Id" />                  
+        </div>
+```
 
 
 ### Summary of above code snippets
@@ -111,6 +133,8 @@ In the Component,
 *   In the async methods, the framework method **ValidateAsync** is used.
 *   This service is injected into the components.
 *   The methods of the service are used for model validation.
+*   The **IdentifierStartsWith** API the framework provides is used to display the validation errors.
+*   The validation errors are shown in tooltips. But, you can show your errors any how you like.
 
 ### Validation Service unit test
 
