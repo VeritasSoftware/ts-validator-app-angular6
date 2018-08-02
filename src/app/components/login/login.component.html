@@ -19,7 +19,6 @@
                     name="Id"                     
                     [(ngModel)]="loginUser.Id" 
                     (ngModelChange)="!validateMe('Id') ? t.open() : t.close()" 
-                    (ngModelChange)="!validateMe('Id') ? document.getElementById('Id').className = 'validation-success' : document.getElementById('Id').className = 'validation-failure'" 
                     [ngbTooltip]="tipContent" 
                     #t="ngbTooltip" 
                     placeholder="Id" />                  
@@ -38,7 +37,6 @@
                     name="Pwd" 
                     [(ngModel)]="loginUser.Pwd" 
                     (ngModelChange)="!validateMe('Pwd') ? t1.open() : t1.close()"
-                    (ngModelChange)="!validateMe('Pwd') ? document.getElementById('Pwd').className = 'validation-success' : document.getElementById('Pwd').className = 'validation-failure'"  
                     [ngbTooltip]="tipContent1" 
                     #t1="ngbTooltip" 
                     placeholder="Password" />                                    

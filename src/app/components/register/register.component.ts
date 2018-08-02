@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 import { ObjectValidator, ValidationError, ValidationResult } from '../../core/validate'
 import {NgbTooltip, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
@@ -26,8 +27,7 @@ export class RegisterComponent implements OnInit {
    @ViewChild('t4') public tooltipConfirmPwd: NgbTooltip;
    @ViewChild('t5') public tooltipEmail: NgbTooltip;
 
-
-  constructor(config: NgbTooltipConfig, private validationService: ValidationService) { 
+  constructor(config: NgbTooltipConfig, private validationService: ValidationService, @Inject(DOCUMENT) document) { 
     config.placement = 'top';
     config.triggers = 'manual';
   }
@@ -60,6 +60,16 @@ export class RegisterComponent implements OnInit {
   validateMe(p: string) {
     this.validationResult = this.validationService.validateRegisterUser(this.registerUser);    
     var errors = this.validationResult.IdentifierStartsWith(p);
+    var element = document.getElementById(p);
+    if (errors.length > 0) {      
+      element.classList.remove("validation-success");
+      element.classList.add("validation-failure");
+    }
+    else
+    {
+      element.classList.remove("validation-failure");
+      element.classList.add("validation-success");
+    }
     return !(errors != null && errors.length > 0);     
   }
 

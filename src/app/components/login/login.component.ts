@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import {NgbTooltip, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
 
 import { ObjectValidator, ValidationError, ValidationResult } from '../../core/validate'
@@ -24,7 +25,7 @@ validationResult: ValidationResult = null;
    @ViewChild('t') public tooltipId: NgbTooltip;
    @ViewChild('t1') public tooltipPwd: NgbTooltip;
 
-  constructor(config: NgbTooltipConfig, private validationService: ValidationService) {
+  constructor(config: NgbTooltipConfig, private validationService: ValidationService, @Inject(DOCUMENT) document) {
     config.placement = 'top';
     config.triggers = 'manual';
    }
@@ -40,6 +41,16 @@ validationResult: ValidationResult = null;
   validateMe(p: string) {
     this.validationResult = this.validationService.validateUser(this.loginUser);    
     var errors = this.validationResult.IdentifierStartsWith(p);
+    var element = document.getElementById(p);
+    if (errors.length > 0) {      
+      element.classList.remove("validation-success");
+      element.classList.add("validation-failure");
+    }
+    else
+    {
+      element.classList.remove("validation-failure");
+      element.classList.add("validation-success");
+    }
     return !(errors != null && errors.length > 0);     
   }
 

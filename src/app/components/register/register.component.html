@@ -19,7 +19,6 @@
                         name="Name" 
                         [(ngModel)]="registerUser.Name" 
                         (ngModelChange)="!validateMe('Name') ? t.open() : t.close()"
-                        (ngModelChange)="!validateMe('Name') ? document.getElementById('Name').className = 'validation-success' : document.getElementById('Name').className = 'validation-failure'"  
                         [ngbTooltip]="tipContent" 
                         #t="ngbTooltip" 
                         placeholder="Name" />                  
@@ -31,14 +30,13 @@
                         *ngFor="let error of validationResult.IdentifierStartsWith('CreditCardNo')">{{error.Message}}
                     </div>
                 </ng-template>
-                <input 
+                <input
                         type="text" 
                         id="CreditCardNo" 
                         class="form-control" 
                         name="CreditCardNo"                         
                         [(ngModel)]="registerUser.CreditCardNo" 
                         (ngModelChange)="!validateMe('CreditCardNo') ? t1.open() : t1.close()" 
-                        (ngModelChange)="!validateMe('CreditCardNo') ? document.getElementById('CreditCardNo').className = 'validation-success' : document.getElementById('CreditCardNo').className = 'validation-failure'" 
                         [ngbTooltip]="tipContent1" 
                         #t1="ngbTooltip" 
                         placeholder="Credit Card Number" />                  
@@ -57,7 +55,6 @@
                         name="Id"                         
                         [(ngModel)]="registerUser.Id" 
                         (ngModelChange)="!validateMe('Id') ? t2.open() : t2.close()" 
-                        (ngModelChange)="!validateMe('Id') ? document.getElementById('Id').className = 'validation-success' : document.getElementById('Id').className = 'validation-failure'"  
                         [ngbTooltip]="tipContent2" 
                         #t2="ngbTooltip" 
                         placeholder="Id" />                  
@@ -76,7 +73,6 @@
                         name="Email" 
                         [(ngModel)]="registerUser.Email" 
                         (ngModelChange)="!validateMe('Email') ? t5.open() : t5.close()" 
-                        (ngModelChange)="!validateMe('Email') ? document.getElementById('Email').className = 'validation-success' : document.getElementById('Email').className = 'validation-failure'"
                         [ngbTooltip]="tipContent5" 
                         #t5="ngbTooltip" 
                         placeholder="Email" />                  
@@ -95,7 +91,6 @@
                         name="Password" 
                         [(ngModel)]="registerUser.Password" 
                         (ngModelChange)="!validateMe('Password') ? t3.open() : t3.close()"
-                        (ngModelChange)="!validateMe('Password') ? document.getElementById('Password').className = 'validation-success' : document.getElementById('Password').className = 'validation-failure'" 
                         [ngbTooltip]="tipContent3" 
                         #t3="ngbTooltip" 
                         placeholder="Password" />                  
@@ -114,7 +109,6 @@
                         name="ConfirmPassword" 
                         [(ngModel)]="registerUser.ConfirmPassword" 
                         (ngModelChange)="!validateMe('ConfirmPassword') ? t4.open() : t4.close()"
-                        (ngModelChange)="!validateMe('ConfirmPassword') ? document.getElementById('ConfirmPassword').className = 'validation-success' : document.getElementById('ConfirmPassword').className = 'validation-failure'"  
                         [ngbTooltip]="tipContent4" 
                         #t4="ngbTooltip" 
                         placeholder="Confirm Password" />                  
