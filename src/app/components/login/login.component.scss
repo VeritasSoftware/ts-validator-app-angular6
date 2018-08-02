@@ -16,12 +16,12 @@
     border-radius: .25rem;
 }
 
-.validation-failure {
-    background-color: darkred;
-    color: white;
+.validation-failure {    
+    border: 3px solid darkred;
+    color: white;    
 }
 
 .validation-success {
     color: black;
-    background-color: white;
+    border: 1px solid #ced4da;
 }
