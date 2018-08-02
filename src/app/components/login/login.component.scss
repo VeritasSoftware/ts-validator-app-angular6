@@ -15,3 +15,13 @@
     background-color: darkred !important;
     border-radius: .25rem;
 }
+
+.validation-failure {
+    background-color: darkred;
+    color: white;
+}
+
+.validation-success {
+    color: black;
+    background-color: white;
+}

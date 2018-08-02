@@ -3,10 +3,34 @@
     color: darkred;
 }
 
+div.tooltip-inner {
+    padding: .25rem .5rem;
+    color: #fff;
+    text-align: center;
+    background-color: darkred !important;
+    border-radius: .25rem;
+    max-width: 500px !important;
+}
+
 .tooltip-inner {
     padding: .25rem .5rem;
     color: #fff;
     text-align: center;
     background-color: darkred !important;
     border-radius: .25rem;
+    max-width: 500px !important;
+}
+
+.tooltip {
+    max-width: 500px !important;
+}
+
+.validation-failure {
+    background-color: darkred;
+    color: white;
+}
+
+.validation-success {
+    color: black;
+    background-color: white;
 }

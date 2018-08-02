@@ -7,12 +7,32 @@
         <div class="form-group">
             <label class="col-md-4">Id</label>                  
             <ng-template #tipContent><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Id')">{{error.Message}}</div></ng-template>
-            <input type="text" id="Id" class="form-control" name="Id" [(ngModel)]="loginUser.Id" (ngModelChange)="!validateMe('Id') ? t.open() : t.close()" [ngbTooltip]="tipContent" #t="ngbTooltip" placeholder="Id" />                  
+            <input 
+                    type="text" 
+                    id="Id" 
+                    class="form-control" 
+                    name="Id" 
+                    [ngClass]="validationResult.IdentifierStartsWith('Id').length > 0 ? 'validation-failure' : 'validation_success'" 
+                    [(ngModel)]="loginUser.Id" 
+                    (ngModelChange)="!validateMe('Id') ? t.open() : t.close()" 
+                    [ngbTooltip]="tipContent" 
+                    #t="ngbTooltip" 
+                    placeholder="Id" />                  
         </div>
         <div class="form-group">
             <label class="col-md-4">Password</label>
             <ng-template #tipContent1><div class="tooltip-inner" *ngFor="let error of validationResult.IdentifierStartsWith('Pwd')" >{{error.Message}}</div></ng-template>
-            <input type="password" id="Pwd" class="form-control" name="Pwd" [(ngModel)]="loginUser.Pwd" (ngModelChange)="!validateMe('Pwd') ? t1.open() : t1.close()" [ngbTooltip]="tipContent1" #t1="ngbTooltip" placeholder="Password" />                                    
+            <input 
+                    type="password" 
+                    id="Pwd" 
+                    class="form-control" 
+                    name="Pwd" 
+                    [ngClass]="validationResult.IdentifierStartsWith('Pwd').length > 0 ? 'validation-failure' : 'validation_success'" 
+                    [(ngModel)]="loginUser.Pwd" 
+                    (ngModelChange)="!validateMe('Pwd') ? t1.open() : t1.close()" 
+                    [ngbTooltip]="tipContent1" 
+                    #t1="ngbTooltip" 
+                    placeholder="Password" />                                    
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary" style="width: 40%; height: 50px;" (click)="login()">Login</button>
