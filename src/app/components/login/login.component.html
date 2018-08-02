@@ -7,9 +7,9 @@
         <div class="form-group">
             <label class="col-md-4">Id</label>                  
             <ng-template #tipContent>
-                <div 
-                    class="tooltip-inner" 
-                    *ngFor="let error of validationResult.IdentifierStartsWith('Id')">{{error.Message}}
+                <div class="tooltip-inner" 
+                     *ngFor="let error of validationResult.IdentifierStartsWith('Id')">
+                    {{error.Message}}
                 </div>
             </ng-template>
             <input 
@@ -27,7 +27,8 @@
             <label class="col-md-4">Password</label>
             <ng-template #tipContent1>
                 <div class="tooltip-inner" 
-                *ngFor="let error of validationResult.IdentifierStartsWith('Pwd')" >{{error.Message}}
+                     *ngFor="let error of validationResult.IdentifierStartsWith('Pwd')" >
+                    {{error.Message}}
             </div>
             </ng-template>
             <input 

@@ -97,13 +97,17 @@ In the Component,
       this.showValidationTooltips();    
   }
 ```
+
+*   Html markup of an input element. 
+*   Using Tooltip to display the errors.
+
 ```html
         <div class="form-group">
             <label class="col-md-4">Id</label>                  
             <ng-template #tipContent>
-                <div 
-                    class="tooltip-inner" 
-                    *ngFor="let error of validationResult.IdentifierStartsWith('Id')">{{error.Message}}
+                <div class="tooltip-inner" 
+                     *ngFor="let error of validationResult.IdentifierStartsWith('Id')">
+                    {{error.Message}}
                 </div>
             </ng-template>
             <input 
