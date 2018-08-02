@@ -38,11 +38,9 @@ validationResult: ValidationResult = null;
     this.validateForm();
   }
 
-  validateMe(p: string) {
-    this.validationResult = this.validationService.validateUser(this.loginUser);    
-    var errors = this.validationResult.IdentifierStartsWith(p);
+  toggleValidateMe(p: string, set: boolean) {
     var element = document.getElementById(p);
-    if (errors.length > 0) {      
+    if (set) {      
       element.classList.remove("validation-success");
       element.classList.add("validation-failure");
     }
@@ -51,6 +49,12 @@ validationResult: ValidationResult = null;
       element.classList.remove("validation-failure");
       element.classList.add("validation-success");
     }
+  }
+
+  validateMe(p: string) {
+    this.validationResult = this.validationService.validateUser(this.loginUser);    
+    var errors = this.validationResult.IdentifierStartsWith(p);    
+    this.toggleValidateMe(p, errors.length > 0);
     return !(errors != null && errors.length > 0);     
   }
 
@@ -73,6 +77,7 @@ validationResult: ValidationResult = null;
   showValidationTooltip(error: string, tooltip: NgbTooltip): void {    
     tooltip.close();
     var errors = this.validationResult.IdentifierStartsWith(error);
+    this.toggleValidateMe(error, errors.length > 0);
     if (errors != null && errors.length > 0) {
       setTimeout(()=> tooltip.open());    
     }    

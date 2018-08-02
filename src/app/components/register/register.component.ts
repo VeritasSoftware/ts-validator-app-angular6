@@ -43,6 +43,7 @@ export class RegisterComponent implements OnInit {
   showValidationTooltip(error: string, tooltip: NgbTooltip): void {    
     tooltip.close();
     var errors = this.validationResult.IdentifierStartsWith(error);
+    this.toggleValidateMe(error, errors.length > 0);
     if (errors != null && errors.length > 0) {
       setTimeout(()=> tooltip.open());    
     }    
@@ -57,11 +58,9 @@ export class RegisterComponent implements OnInit {
     this.showValidationTooltip("Email", this.tooltipEmail);
   }  
 
-  validateMe(p: string) {
-    this.validationResult = this.validationService.validateRegisterUser(this.registerUser);    
-    var errors = this.validationResult.IdentifierStartsWith(p);
+  toggleValidateMe(p: string, set: boolean) {
     var element = document.getElementById(p);
-    if (errors.length > 0) {      
+    if (set) {      
       element.classList.remove("validation-success");
       element.classList.add("validation-failure");
     }
@@ -70,6 +69,13 @@ export class RegisterComponent implements OnInit {
       element.classList.remove("validation-failure");
       element.classList.add("validation-success");
     }
+  }
+
+  validateMe(p: string) {
+    this.validationResult = this.validationService.validateRegisterUser(this.registerUser);    
+    var errors = this.validationResult.IdentifierStartsWith(p);
+    var element = document.getElementById(p);
+    this.toggleValidateMe(p, errors.length > 0);
     return !(errors != null && errors.length > 0);     
   }
 
