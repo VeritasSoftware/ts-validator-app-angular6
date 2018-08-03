@@ -11,7 +11,7 @@ import { ValidationService } from '../../services/validation-service';
 /****************************/
 export interface IComponentBase {
     toggleValidateMe(item: string, set: boolean);
-    IsValid(item: string, service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean>;
+    IsValid(item: string, service:(validationService: ValidationService) => ValidationResult) : boolean;
     showValidationTooltip(error: string, tooltip: NgbTooltip): void;
     validateForm(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void>
 }
@@ -20,7 +20,7 @@ export interface IComponentBase {
 /* Base component class */
 /************************/
 export abstract class ComponentBase implements IComponentBase {
-    protected validationResult: ValidationResult = null;
+    protected validationResult: ValidationResult = new ValidationResult(new Array<ValidationError>());
     validationService: ValidationService;
     config: NgbTooltipConfig;
 
@@ -48,8 +48,8 @@ export abstract class ComponentBase implements IComponentBase {
         }
     }
 
-    async IsValid(item: string, service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean> {
-        this.validationResult = await service(this.validationService);    
+    IsValid(item: string, service:(validationService: ValidationService) => ValidationResult) : boolean {
+        this.validationResult = service(this.validationService);    
         var errors = this.validationResult.IdentifierStartsWith(item);    
         this.toggleValidateMe(item, errors.length > 0);
         return !(errors != null && errors.length > 0);     

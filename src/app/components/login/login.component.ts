@@ -18,10 +18,9 @@ import { ComponentBase } from '../common/component-base'
 })
 export class LoginComponent extends ComponentBase implements OnInit {
 loginUser : User;
-Id: string;
-Pwd: string;
 title: string = "Login"
-validationDelegate = validationService => validationService.validateUserAsync(this.loginUser); 
+validationAsyncDelegate = validationService => validationService.validateUserAsync(this.loginUser); 
+validationSyncDelegate = validationService => validationService.validateUser(this.loginUser); 
 
    @ViewChild('t') public tooltipId: NgbTooltip;
    @ViewChild('t1') public tooltipPwd: NgbTooltip;
@@ -35,11 +34,11 @@ validationDelegate = validationService => validationService.validateUserAsync(th
   }
 
   async onResize(event){
-    await this.validateForm(this.validationDelegate);
+    await this.validateForm(this.validationAsyncDelegate);
   }  
 
-  async validateMe(item: string) {
-    this.IsValid(item, this.validationDelegate);
+  validateMe(item: string) : boolean {
+    return this.IsValid(item, this.validationSyncDelegate);
   }
 
   showValidationTooltips() : void {
@@ -48,7 +47,7 @@ validationDelegate = validationService => validationService.validateUserAsync(th
   }  
 
   async login() {
-    await this.validateForm(this.validationDelegate);                           
+    await this.validateForm(this.validationAsyncDelegate);                           
   }
 
 }

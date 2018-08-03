@@ -16,11 +16,11 @@ import { ComponentBase } from '../common/component-base';
   },
   providers: [NgbTooltipConfig, ValidationService]
 })
-export class RegisterComponent extends ComponentBase implements OnInit {
-  title: string = "Register"
+export class RegisterComponent extends ComponentBase implements OnInit {  
   registerUser : RegisterUser;
-  validationResult: ValidationResult = null;
-  validationDelegate = validationService => validationService.validateRegisterUserAsync(this.registerUser);
+  title: string = "Register"
+  validationAsyncDelegate = validationService => validationService.validateRegisterUserAsync(this.registerUser);
+  validationSyncDelegate = validationService => validationService.validateRegisterUser(this.registerUser);
 
    @ViewChild('t') public tooltipName: NgbTooltip;
    @ViewChild('t1') public tooltipCreditCardNo: NgbTooltip;
@@ -38,11 +38,11 @@ export class RegisterComponent extends ComponentBase implements OnInit {
   }
 
   async onResize(event){
-    await this.validateForm(this.validationDelegate); 
+    await this.validateForm(this.validationAsyncDelegate); 
   }
   
-  async validateMe(item: string) {
-    this.IsValid(item, this.validationDelegate);
+  validateMe(item: string) : boolean {
+    return this.IsValid(item, this.validationSyncDelegate);
   }
 
   showValidationTooltips() : void {
@@ -55,6 +55,6 @@ export class RegisterComponent extends ComponentBase implements OnInit {
   }    
 
   async register() {
-     await this.validateForm(this.validationDelegate);                            
+     await this.validateForm(this.validationAsyncDelegate);                            
  }
 }

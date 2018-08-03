@@ -5,12 +5,12 @@
   <div class="panel-body">
     <form>
         <div class="form-group">
-            <label class="col-md-4">Id</label>                  
-            <ng-template #tipContent>
-                <div class="tooltip-inner" 
-                     *ngFor="let error of validationResult.IdentifierStartsWith('Id')">
-                    {{error.Message}}
-                </div>
+            <label class="col-md-4">Id</label>              
+            <ng-template #tipContent>                    
+                    <div class="tooltip-inner" 
+                        *ngFor="let error of validationResult.IdentifierStartsWith('Id')">
+                        {{error.Message}}
+                    </div>                                
             </ng-template>
             <input 
                     type="text" 
@@ -25,12 +25,12 @@
         </div>
         <div class="form-group">
             <label class="col-md-4">Password</label>
-            <ng-template #tipContent1>
-                <div class="tooltip-inner" 
-                     *ngFor="let error of validationResult.IdentifierStartsWith('Pwd')" >
-                    {{error.Message}}
-            </div>
-            </ng-template>
+            <ng-template #tipContent1>                
+                    <div class="tooltip-inner"                         
+                        *ngFor="let error of validationResult.IdentifierStartsWith('Pwd')" >
+                        {{error.Message}}
+                    </div>                
+            </ng-template>            
             <input 
                     type="password" 
                     id="Pwd" 
@@ -48,5 +48,3 @@
     </form>
   </div>
 </div>
-
-
