@@ -6,8 +6,7 @@
 
 | Login | Register |
 | --- | -- |
-| ![Login validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Login.jpg) | 
- ![Register validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Register.jpg) | 
+| ![Login validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Login.jpg) | ![Register validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Register.jpg) | 
 
 The app uses a **Service oriented approach to client-side validation**, with the below advantages:
 
