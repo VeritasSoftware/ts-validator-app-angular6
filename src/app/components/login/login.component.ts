@@ -21,6 +21,7 @@ loginUser : User;
 Id: string;
 Pwd: string;
 title: string = "Login"
+validationDelegate = validationService => validationService.validateUserAsync(this.loginUser); 
 
    @ViewChild('t') public tooltipId: NgbTooltip;
    @ViewChild('t1') public tooltipPwd: NgbTooltip;
@@ -34,8 +35,12 @@ title: string = "Login"
   }
 
   async onResize(event){
-    await this.validateForm(validationService => validationService.validateUserAsync(this.loginUser));
+    await this.validateForm(this.validationDelegate);
   }  
+
+  async validateMe(item: string) {
+    this.IsValid(item, this.validationDelegate);
+  }
 
   showValidationTooltips() : void {
     this.showValidationTooltip("Id", this.tooltipId);
@@ -43,7 +48,7 @@ title: string = "Login"
   }  
 
   async login() {
-    await this.validateForm(validationService => validationService.validateUserAsync(this.loginUser));                           
+    await this.validateForm(this.validationDelegate);                           
   }
 
 }

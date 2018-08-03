@@ -8,14 +8,14 @@ import { ValidationService } from '../../services/validation-service';
 
 export interface IComponentBase {
     toggleValidateMe(item: string, set: boolean);
-    validateMe(item: string, service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean>;
+    IsValid(item: string, service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean>;
     showValidationTooltip(error: string, tooltip: NgbTooltip): void;
     validateForm(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void>
 }
   
 export abstract class ComponentBase implements IComponentBase {
     protected validationResult: ValidationResult = null;
-    service: ValidationService;
+    validationService: ValidationService;
     config: NgbTooltipConfig;
 
     constructor(@Inject(DOCUMENT) document) {
@@ -23,7 +23,7 @@ export abstract class ComponentBase implements IComponentBase {
         const injector1 = Injector.create({providers: [{provide: ValidationService, deps: []}]});
         
         this.config = injector.get(NgbTooltipConfig);
-        this.service = injector1.get(ValidationService);
+        this.validationService = injector1.get(ValidationService);
 
         this.config.placement = 'top';
         this.config.triggers = 'manual';
@@ -42,8 +42,8 @@ export abstract class ComponentBase implements IComponentBase {
         }
     }
 
-    async validateMe(item: string, service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean> {
-        this.validationResult = await service(this.service);    
+    async IsValid(item: string, service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean> {
+        this.validationResult = await service(this.validationService);    
         var errors = this.validationResult.IdentifierStartsWith(item);    
         this.toggleValidateMe(item, errors.length > 0);
         return !(errors != null && errors.length > 0);     
@@ -59,7 +59,7 @@ export abstract class ComponentBase implements IComponentBase {
     }
 
     async validateForm(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void> {
-        this.validationResult = await service(this.service);
+        this.validationResult = await service(this.validationService);
         
         this.validationResult.IsValid ?
             alert("Congrats! Validation passed.") :

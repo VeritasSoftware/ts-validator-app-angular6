@@ -20,6 +20,7 @@ export class RegisterComponent extends ComponentBase implements OnInit {
   title: string = "Register"
   registerUser : RegisterUser;
   validationResult: ValidationResult = null;
+  validationDelegate = validationService => validationService.validateRegisterUserAsync(this.registerUser);
 
    @ViewChild('t') public tooltipName: NgbTooltip;
    @ViewChild('t1') public tooltipCreditCardNo: NgbTooltip;
@@ -37,8 +38,12 @@ export class RegisterComponent extends ComponentBase implements OnInit {
   }
 
   async onResize(event){
-    await this.validateForm(validationService => validationService.validateRegisterUserAsync(this.registerUser)); 
-  }  
+    await this.validateForm(this.validationDelegate); 
+  }
+  
+  async validateMe(item: string) {
+    this.IsValid(item, this.validationDelegate);
+  }
 
   showValidationTooltips() : void {
     this.showValidationTooltip("Name", this.tooltipName); 
@@ -50,6 +55,6 @@ export class RegisterComponent extends ComponentBase implements OnInit {
   }    
 
   async register() {
-     await this.validateForm(validationService => validationService.validateRegisterUserAsync(this.registerUser));                            
+     await this.validateForm(this.validationDelegate);                            
  }
 }
