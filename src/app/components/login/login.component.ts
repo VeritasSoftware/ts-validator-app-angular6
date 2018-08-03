@@ -5,6 +5,7 @@ import {NgbTooltip, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
 import { ObjectValidator, ValidationError, ValidationResult } from '../../core/validate'
 import { User } from '../../models/models.component'
 import { ValidationService } from '../../services/validation-service';
+import { ComponentBase } from '../common/component-base'
 
 @Component({
   selector: 'app-login',
@@ -15,76 +16,36 @@ import { ValidationService } from '../../services/validation-service';
   },
   providers: [NgbTooltipConfig, ValidationService] 
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends ComponentBase implements OnInit {
 loginUser : User;
 Id: string;
 Pwd: string;
 title: string = "Login"
-validationResult: ValidationResult = null;
 
    @ViewChild('t') public tooltipId: NgbTooltip;
    @ViewChild('t1') public tooltipPwd: NgbTooltip;
 
-  constructor(config: NgbTooltipConfig, private validationService: ValidationService, @Inject(DOCUMENT) document) {
-    config.placement = 'top';
-    config.triggers = 'manual';
+  constructor(@Inject(DOCUMENT) document) {
+      super(document);    
    }
 
   ngOnInit() {     
     this.loginUser = new User("", "");
   }
 
-  onResize(event){
-    this.validateForm();
-  }
-
-  toggleValidateMe(p: string, set: boolean) {
-    var element = document.getElementById(p);
-    if (set) {      
-      element.classList.remove("validation-success");
-      element.classList.add("validation-failure");
-    }
-    else
-    {
-      element.classList.remove("validation-failure");
-      element.classList.add("validation-success");
-    }
-  }
-
-  validateMe(p: string) {
-    this.validationResult = this.validationService.validateUser(this.loginUser);    
-    var errors = this.validationResult.IdentifierStartsWith(p);    
-    this.toggleValidateMe(p, errors.length > 0);
-    return !(errors != null && errors.length > 0);     
-  }
-
-  async validateForm() {
-    //Sync
-    //this.validationResult = this.validationService.validateUser(this.loginUser);
-    //Async
-    this.validationResult = await this.validationService.validateUserAsync(this.loginUser);
-
-    this.validationResult.IsValid ?
-      alert("Congrats! Validation passed.") :
-      this.showValidationTooltips();    
-  }
+  async onResize(event){
+    await this.validateForm(validationService => validationService.validateUserAsync(this.loginUser));
+  }  
 
   showValidationTooltips() : void {
     this.showValidationTooltip("Id", this.tooltipId);
     this.showValidationTooltip("Pwd", this.tooltipPwd);
-  }
-
-  showValidationTooltip(error: string, tooltip: NgbTooltip): void {    
-    tooltip.close();
-    var errors = this.validationResult.IdentifierStartsWith(error);
-    this.toggleValidateMe(error, errors.length > 0);
-    if (errors != null && errors.length > 0) {
-      setTimeout(()=> tooltip.open());    
-    }    
   }  
 
-  login() {
-     this.validateForm();                            
+  async login() {
+    await this.validateForm(validationService => validationService.validateUserAsync(this.loginUser));                           
   }
 
 }
+
+

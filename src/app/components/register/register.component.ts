@@ -5,6 +5,7 @@ import { ObjectValidator, ValidationError, ValidationResult } from '../../core/v
 import {NgbTooltip, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
 import { RegisterUser } from '../../models/models.component'
 import { ValidationService } from '../../services/validation-service';
+import { ComponentBase } from '../common/component-base';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,7 @@ import { ValidationService } from '../../services/validation-service';
   },
   providers: [NgbTooltipConfig, ValidationService]
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent extends ComponentBase implements OnInit {
   title: string = "Register"
   registerUser : RegisterUser;
   validationResult: ValidationResult = null;
@@ -27,27 +28,17 @@ export class RegisterComponent implements OnInit {
    @ViewChild('t4') public tooltipConfirmPwd: NgbTooltip;
    @ViewChild('t5') public tooltipEmail: NgbTooltip;
 
-  constructor(config: NgbTooltipConfig, private validationService: ValidationService, @Inject(DOCUMENT) document) { 
-    config.placement = 'top';
-    config.triggers = 'manual';
+  constructor(@Inject(DOCUMENT) document) { 
+    super(document);
   }
 
   ngOnInit() {
     this.registerUser = new RegisterUser("", "", "", "", "", "");
   }
 
-  onResize(event){
-    this.validateForm();
-  }
-
-  showValidationTooltip(error: string, tooltip: NgbTooltip): void {    
-    tooltip.close();
-    var errors = this.validationResult.IdentifierStartsWith(error);
-    this.toggleValidateMe(error, errors.length > 0);
-    if (errors != null && errors.length > 0) {
-      setTimeout(()=> tooltip.open());    
-    }    
-  } 
+  async onResize(event){
+    await this.validateForm(validationService => validationService.validateRegisterUserAsync(this.registerUser)); 
+  }  
 
   showValidationTooltips() : void {
     this.showValidationTooltip("Name", this.tooltipName); 
@@ -56,38 +47,9 @@ export class RegisterComponent implements OnInit {
     this.showValidationTooltip("Password", this.tooltipPwd); 
     this.showValidationTooltip("ConfirmPassword", this.tooltipConfirmPwd); 
     this.showValidationTooltip("Email", this.tooltipEmail);
-  }  
+  }    
 
-  toggleValidateMe(p: string, set: boolean) {
-    var element = document.getElementById(p);
-    if (set) {      
-      element.classList.remove("validation-success");
-      element.classList.add("validation-failure");
-    }
-    else
-    {
-      element.classList.remove("validation-failure");
-      element.classList.add("validation-success");
-    }
-  }
-
-  validateMe(p: string) {
-    this.validationResult = this.validationService.validateRegisterUser(this.registerUser);    
-    var errors = this.validationResult.IdentifierStartsWith(p);
-    var element = document.getElementById(p);
-    this.toggleValidateMe(p, errors.length > 0);
-    return !(errors != null && errors.length > 0);     
-  }
-
-  validateForm() {
-    this.validationResult = this.validationService.validateRegisterUser(this.registerUser);
-
-    this.validationResult.IsValid ?
-      alert("Congrats! Validation passed.") :
-      this.showValidationTooltips();       
-  }
-
-  register() {
-    this.validateForm();                            
+  async register() {
+     await this.validateForm(validationService => validationService.validateRegisterUserAsync(this.registerUser));                            
  }
 }
