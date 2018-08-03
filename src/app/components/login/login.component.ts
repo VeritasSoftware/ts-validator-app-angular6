@@ -19,14 +19,16 @@ import { ComponentBase } from '../common/component-base'
 export class LoginComponent extends ComponentBase implements OnInit {
 loginUser : User;
 title: string = "Login"
-validationAsyncDelegate = validationService => validationService.validateUserAsync(this.loginUser); 
-validationSyncDelegate = validationService => validationService.validateUser(this.loginUser); 
 
    @ViewChild('t') public tooltipId: NgbTooltip;
    @ViewChild('t1') public tooltipPwd: NgbTooltip;
 
   constructor(@Inject(DOCUMENT) document) {
-      super(document);    
+      super(document);  
+      
+      //Assign validation service method to be called in delegate
+      this.validationAsyncDelegate = validationService => validationService.validateUserAsync(this.loginUser);
+      this.validationSyncDelegate = validationService => validationService.validateUser(this.loginUser);
    }
 
   ngOnInit() {     
@@ -34,7 +36,7 @@ validationSyncDelegate = validationService => validationService.validateUser(thi
   }
 
   async onResize(event){
-    await this.validateForm(this.validationAsyncDelegate);
+    await this.validateFormAsync(this.validationAsyncDelegate);
   }  
 
   validateMe(item: string) : boolean {
@@ -47,7 +49,7 @@ validationSyncDelegate = validationService => validationService.validateUser(thi
   }  
 
   async login() {
-    await this.validateForm(this.validationAsyncDelegate);                           
+    await this.validateFormAsync(this.validationAsyncDelegate);                           
   }
 
 }

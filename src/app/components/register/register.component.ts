@@ -18,9 +18,7 @@ import { ComponentBase } from '../common/component-base';
 })
 export class RegisterComponent extends ComponentBase implements OnInit {  
   registerUser : RegisterUser;
-  title: string = "Register"
-  validationAsyncDelegate = validationService => validationService.validateRegisterUserAsync(this.registerUser);
-  validationSyncDelegate = validationService => validationService.validateRegisterUser(this.registerUser);
+  title: string = "Register"  
 
    @ViewChild('t') public tooltipName: NgbTooltip;
    @ViewChild('t1') public tooltipCreditCardNo: NgbTooltip;
@@ -31,6 +29,10 @@ export class RegisterComponent extends ComponentBase implements OnInit {
 
   constructor(@Inject(DOCUMENT) document) { 
     super(document);
+
+    //Assign validation service method to be called in delegate
+    this.validationAsyncDelegate = validationService => validationService.validateRegisterUserAsync(this.registerUser);
+    this.validationSyncDelegate = validationService => validationService.validateRegisterUser(this.registerUser);
   }
 
   ngOnInit() {
@@ -38,7 +40,7 @@ export class RegisterComponent extends ComponentBase implements OnInit {
   }
 
   async onResize(event){
-    await this.validateForm(this.validationAsyncDelegate); 
+    await this.validateFormAsync(this.validationAsyncDelegate); 
   }
   
   validateMe(item: string) : boolean {
@@ -55,6 +57,6 @@ export class RegisterComponent extends ComponentBase implements OnInit {
   }    
 
   async register() {
-     await this.validateForm(this.validationAsyncDelegate);                            
+     await this.validateFormAsync(this.validationAsyncDelegate);                            
  }
 }

@@ -37,14 +37,14 @@ describe('LoginComponent', () => {
   it('validateForm is false', async () => {
     expect(component).toBeTruthy();
     component.loginUser = new User("", "");
-    await component.validateForm();
+    await component.validateFormAsync();
     expect(component.validationResult.IsValid).toBeFalsy();
   }); 
 
   it('validateForm is true', async () => {
     expect(component).toBeTruthy();
     component.loginUser = new User("xyz", "abc");
-    await component.validateForm();
+    await component.validateFormAsync();
     expect(component.validationResult.IsValid).toBeTruthy();
   }); 
 });

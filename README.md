@@ -84,22 +84,34 @@ In the Component,
 
 *   the injected Validation Service is invoked to perform the validation. 
 *   this can be Sync or Async validation.
+*   The components, Login and Register, inherit from ComponentBase.
 
+Base component class:
 ```typescript
-  async validateForm() {
-    //Sync
-    //this.validationResult = this.validationService.validateUser(this.loginUser);
-    //Async
-    this.validationResult = await this.validationService.validateUserAsync(this.loginUser);
-
-    this.validationResult.IsValid ?
-      alert("Congrats! Validation passed.") :
-      this.showValidationTooltips();    
+    async validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void> {
+        this.validationResult = await service(this.validationService);
+        
+        this.validationResult.IsValid ?
+            alert("Congrats! Validation passed.") :
+            this.showValidationTooltips();   
+    }  
+```
+Login component:
+```typescript
+  async login() {
+    await this.validateFormAsync(validationService => validationService.validateUserAsync(this.loginUser));                           
   }
 ```
 
+Register component:
+```typescript
+  async register() {
+     await this.validateFormAsync(validationService => validationService.validateRegisterUserAsync(this.registerUser));                            
+ }
+```
+
 *   Html markup of an input element. 
-*   Using Tooltip to display the errors.
+*   Using angular bootstrap Tooltip to display the errors.
 
 ```html
         <div class="form-group">

@@ -13,13 +13,16 @@ export interface IComponentBase {
     toggleValidateMe(item: string, set: boolean);
     IsValid(item: string, service:(validationService: ValidationService) => ValidationResult) : boolean;
     showValidationTooltip(error: string, tooltip: NgbTooltip): void;
-    validateForm(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void>
+    validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void>
 }
   
 /************************/
 /* Base component class */
 /************************/
 export abstract class ComponentBase implements IComponentBase {
+    public validationAsyncDelegate: (validationService: ValidationService) => Promise<ValidationResult>;
+    public validationSyncDelegate: (validationService: ValidationService) => ValidationResult;
+
     protected validationResult: ValidationResult = null;
 
     validationService: ValidationService;
@@ -65,7 +68,7 @@ export abstract class ComponentBase implements IComponentBase {
         }    
     }
 
-    async validateForm(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void> {
+    async validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void> {
         this.validationResult = await service(this.validationService);
         
         this.validationResult.IsValid ?
