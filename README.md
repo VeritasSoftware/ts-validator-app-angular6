@@ -103,12 +103,12 @@ In the Component,
 
 ```html
         <div class="form-group">
-            <label class="col-md-4">Id</label>                  
-            <ng-template #tipContent>
-                <div class="tooltip-inner" 
-                     *ngFor="let error of validationResult.IdentifierStartsWith('Id')">
-                    {{error.Message}}
-                </div>
+            <label class="col-md-4">Id</label>
+            <ng-template #tipContent>  
+                    <div class="tooltip-inner"
+                        *ngFor="let error of validationResult?.IdentifierStartsWith('Id')">
+                        {{error.Message}}
+                    </div>                                
             </ng-template>
             <input 
                     type="text" 
@@ -117,7 +117,8 @@ In the Component,
                     name="Id"                     
                     [(ngModel)]="loginUser.Id" 
                     (ngModelChange)="!validateMe('Id') ? t.open() : t.close()" 
-                    [ngbTooltip]="tipContent" 
+                    [ngbTooltip]="tipContent"   
+                    [disableTooltip]="validationResult == null"
                     #t="ngbTooltip" 
                     placeholder="Id" />                  
         </div>

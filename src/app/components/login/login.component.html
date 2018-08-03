@@ -6,14 +6,12 @@
     <form>
         <div class="form-group">
             <label class="col-md-4">Id</label>
-            <div>
             <ng-template #tipContent>  
                     <div class="tooltip-inner"
                         *ngFor="let error of validationResult?.IdentifierStartsWith('Id')">
                         {{error.Message}}
                     </div>                                
             </ng-template>
-            </div>              
             <input 
                     type="text" 
                     id="Id" 
