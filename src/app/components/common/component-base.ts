@@ -6,6 +6,9 @@ import {NgbTooltip, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
 import { ObjectValidator, ValidationError, ValidationResult } from '../../core/validate';
 import { ValidationService } from '../../services/validation-service';
 
+/****************************/
+/* Base component interface */
+/****************************/
 export interface IComponentBase {
     toggleValidateMe(item: string, set: boolean);
     IsValid(item: string, service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean>;
@@ -13,6 +16,9 @@ export interface IComponentBase {
     validateForm(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void>
 }
   
+/************************/
+/* Base component class */
+/************************/
 export abstract class ComponentBase implements IComponentBase {
     protected validationResult: ValidationResult = null;
     validationService: ValidationService;
@@ -32,13 +38,13 @@ export abstract class ComponentBase implements IComponentBase {
     toggleValidateMe(p: string, set: boolean) {
         var element = document.getElementById(p);
         if (set) {      
-        element.classList.remove("validation-success");
-        element.classList.add("validation-failure");
+            element.classList.remove("validation-success");
+            element.classList.add("validation-failure");
         }
         else
         {
-        element.classList.remove("validation-failure");
-        element.classList.add("validation-success");
+            element.classList.remove("validation-failure");
+            element.classList.add("validation-success");
         }
     }
 
