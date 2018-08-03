@@ -7,7 +7,7 @@
             <div class="form-group">
                 <ng-template #tipContent>                        
                         <div class="tooltip-inner"
-                            *ngFor="let error of validationResult.IdentifierStartsWith('Name')">
+                            *ngFor="let error of validationResult?.IdentifierStartsWith('Name')">
                             {{error.Message}}
                         </div>                    
                 </ng-template>
@@ -18,7 +18,8 @@
                         name="Name" 
                         [(ngModel)]="registerUser.Name" 
                         (ngModelChange)="!validateMe('Name') ? t.open() : t.close()"
-                        [ngbTooltip]="tipContent" 
+                        [ngbTooltip]="tipContent"
+                        [disableTooltip]="validationResult == null" 
                         #t="ngbTooltip" 
                         placeholder="Name" />                  
             </div>
@@ -37,7 +38,8 @@
                         name="CreditCardNo"                         
                         [(ngModel)]="registerUser.CreditCardNo" 
                         (ngModelChange)="!validateMe('CreditCardNo') ? t1.open() : t1.close()" 
-                        [ngbTooltip]="tipContent1" 
+                        [ngbTooltip]="tipContent1"
+                        [disableTooltip]="validationResult == null" 
                         #t1="ngbTooltip" 
                         placeholder="Credit Card Number" />                  
             </div>            
@@ -55,7 +57,8 @@
                         name="Id"                         
                         [(ngModel)]="registerUser.Id" 
                         (ngModelChange)="!validateMe('Id') ? t2.open() : t2.close()" 
-                        [ngbTooltip]="tipContent2" 
+                        [ngbTooltip]="tipContent2"
+                        [disableTooltip]="validationResult == null" 
                         #t2="ngbTooltip" 
                         placeholder="Id" />                  
             </div>            
@@ -73,7 +76,8 @@
                         name="Email" 
                         [(ngModel)]="registerUser.Email" 
                         (ngModelChange)="!validateMe('Email') ? t5.open() : t5.close()" 
-                        [ngbTooltip]="tipContent5" 
+                        [ngbTooltip]="tipContent5"
+                        [disableTooltip]="validationResult == null" 
                         #t5="ngbTooltip" 
                         placeholder="Email" />                  
             </div>
@@ -91,7 +95,8 @@
                         name="Password" 
                         [(ngModel)]="registerUser.Password" 
                         (ngModelChange)="!validateMe('Password') ? t3.open() : t3.close()"
-                        [ngbTooltip]="tipContent3" 
+                        [ngbTooltip]="tipContent3"
+                        [disableTooltip]="validationResult == null" 
                         #t3="ngbTooltip" 
                         placeholder="Password" />                  
             </div>
@@ -109,7 +114,8 @@
                         name="ConfirmPassword" 
                         [(ngModel)]="registerUser.ConfirmPassword" 
                         (ngModelChange)="!validateMe('ConfirmPassword') ? t4.open() : t4.close()"
-                        [ngbTooltip]="tipContent4" 
+                        [ngbTooltip]="tipContent4"
+                        [disableTooltip]="validationResult == null" 
                         #t4="ngbTooltip" 
                         placeholder="Confirm Password" />                  
             </div>

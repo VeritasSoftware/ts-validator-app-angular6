@@ -20,7 +20,8 @@ export interface IComponentBase {
 /* Base component class */
 /************************/
 export abstract class ComponentBase implements IComponentBase {
-    protected validationResult: ValidationResult = new ValidationResult(new Array<ValidationError>());
+    protected validationResult: ValidationResult = null;
+
     validationService: ValidationService;
     config: NgbTooltipConfig;
 

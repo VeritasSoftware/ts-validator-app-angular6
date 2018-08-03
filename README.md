@@ -4,9 +4,10 @@
 
 [**Article on framework**](https://www.c-sharpcorner.com/article/ts-validator-typescript-based-generic-validation-framework/)
 
-| On validation |
-| --- |
-| ![Login validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Login_2.jpg) | 
+| Login | Register |
+| --- | -- |
+| ![Login validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Login.jpg) | 
+ ![Register validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Register.jpg) | 
 
 The app uses a **Service oriented approach to client-side validation**, with the below advantages:
 
