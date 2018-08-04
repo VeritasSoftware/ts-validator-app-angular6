@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Injector } from '@angular/core';
-import {NgbTooltip, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
-import { ObjectValidator, ValidationError, ValidationResult } from '../../core/validate';
+import { ValidationResult } from '../../core/validate';
 import { ValidationService } from '../../services/validation-service';
 
 /****************************/
@@ -20,8 +20,8 @@ export interface IComponentBase {
 /* Base component class */
 /************************/
 export abstract class ComponentBase implements IComponentBase {
-    public validationAsyncDelegate: (validationService: ValidationService) => Promise<ValidationResult>;
-    public validationSyncDelegate: (validationService: ValidationService) => ValidationResult;
+    protected validationAsyncDelegate: (validationService: ValidationService) => Promise<ValidationResult>;
+    protected validationSyncDelegate: (validationService: ValidationService) => ValidationResult;
 
     protected validationResult: ValidationResult = null;
 
@@ -29,11 +29,11 @@ export abstract class ComponentBase implements IComponentBase {
     config: NgbTooltipConfig;
 
     constructor(@Inject(DOCUMENT) document) {
-        const injector = Injector.create({providers: [{provide: NgbTooltipConfig, deps: []}]});
-        const injector1 = Injector.create({providers: [{provide: ValidationService, deps: []}]});
+        const injectorTooltipConfig = Injector.create({providers: [{provide: NgbTooltipConfig, deps: []}]});
+        const injectorValidationService = Injector.create({providers: [{provide: ValidationService, deps: []}]});
         
-        this.config = injector.get(NgbTooltipConfig);
-        this.validationService = injector1.get(ValidationService);
+        this.config = injectorTooltipConfig.get(NgbTooltipConfig);
+        this.validationService = injectorValidationService.get(ValidationService);
 
         this.config.placement = 'top';
         this.config.triggers = 'manual';

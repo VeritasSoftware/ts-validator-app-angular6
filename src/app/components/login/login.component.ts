@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import {NgbTooltip, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
-import { ObjectValidator, ValidationError, ValidationResult } from '../../core/validate'
+//import { ValidationError, ValidationResult } from '../../core/validate'
 import { User } from '../../models/models.component'
 import { ValidationService } from '../../services/validation-service';
 import { ComponentBase } from '../common/component-base'
