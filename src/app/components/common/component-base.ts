@@ -29,11 +29,10 @@ export abstract class ComponentBase implements IComponentBase {
     config: NgbTooltipConfig;
 
     constructor(@Inject(DOCUMENT) document) {
-        const injectorTooltipConfig = Injector.create({providers: [{provide: NgbTooltipConfig, deps: []}]});
-        const injectorValidationService = Injector.create({providers: [{provide: ValidationService, deps: []}]});
+        const injector = Injector.create({providers: [{provide: NgbTooltipConfig, deps: []}, {provide: ValidationService, deps: []}]});
         
-        this.config = injectorTooltipConfig.get(NgbTooltipConfig);
-        this.validationService = injectorValidationService.get(ValidationService);
+        this.config = injector.get(NgbTooltipConfig);
+        this.validationService = injector.get(ValidationService);
 
         this.config.placement = 'top';
         this.config.triggers = 'manual';
