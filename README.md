@@ -87,6 +87,11 @@ In the Component,
 *   The components, Login and Register, inherit from ComponentBase.
 
 Base component class:
+
+*   the form-related validation methods are in the base class.
+*   the Validation Service is injected into the base class.
+*   wrappers like below allow the derived components to leverage these methods.
+
 ```typescript
     async validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean> {
         this.validationResult = await service(this.validationService);
@@ -109,7 +114,6 @@ Login component:
     }
   }
 ```
-
 Register component:
 ```typescript
   async register() {
