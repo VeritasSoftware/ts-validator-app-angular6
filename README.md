@@ -88,13 +88,15 @@ In the Component,
 
 Base component class:
 ```typescript
-    async validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void> {
+    async validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean> {
         this.validationResult = await service(this.validationService);
         
         this.validationResult.IsValid ?
             alert("Congrats! Validation passed.") :
-            this.showValidationTooltips();   
-    }  
+            this.showValidationTooltips();
+            
+        return this.validationResult.IsValid;
+    }
 ```
 Login component:
 ```typescript
