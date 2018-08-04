@@ -2,9 +2,7 @@ import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NgbTooltip, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
-//import { ValidationError, ValidationResult } from '../../core/validate'
 import { User } from '../../models/models.component'
-import { ValidationService } from '../../services/validation-service';
 import { ComponentBase } from '../common/component-base'
 
 @Component({
@@ -14,7 +12,7 @@ import { ComponentBase } from '../common/component-base'
   host: {
     '(window:resize)': 'onResize($event)'
   },
-  providers: [NgbTooltipConfig, ValidationService] 
+  providers: [NgbTooltipConfig] 
 })
 export class LoginComponent extends ComponentBase implements OnInit {
 loginUser : User;
@@ -23,8 +21,8 @@ title: string = "Login"
    @ViewChild('t') public tooltipId: NgbTooltip;
    @ViewChild('t1') public tooltipPwd: NgbTooltip;
 
-  constructor(@Inject(DOCUMENT) document) {
-      super(document);  
+  constructor(@Inject(DOCUMENT) document, private config: NgbTooltipConfig) {
+      super(document, config);          
       
       //Assign validation service method to be called in delegate
       this.validationAsyncDelegate = validationService => validationService.validateUserAsync(this.loginUser);
@@ -43,6 +41,7 @@ title: string = "Login"
     return this.IsValid(item, this.validationSyncDelegate);
   }
 
+  /* Override of base class method */
   showValidationTooltips() : void {
     this.showValidationTooltip("Id", this.tooltipId);
     this.showValidationTooltip("Pwd", this.tooltipPwd);

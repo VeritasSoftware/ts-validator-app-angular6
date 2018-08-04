@@ -26,16 +26,14 @@ export abstract class ComponentBase implements IComponentBase {
     protected validationResult: ValidationResult = null;
 
     validationService: ValidationService;
-    config: NgbTooltipConfig;
 
-    constructor(@Inject(DOCUMENT) document) {
-        const injector = Injector.create({providers: [{provide: NgbTooltipConfig, deps: []}, {provide: ValidationService, deps: []}]});
+    constructor(@Inject(DOCUMENT) document, config: NgbTooltipConfig) {
+        const injector = Injector.create({providers: [{provide: ValidationService, deps: []}]});
         
-        this.config = injector.get(NgbTooltipConfig);
         this.validationService = injector.get(ValidationService);
 
-        this.config.placement = 'top';
-        this.config.triggers = 'manual';
+        config.placement = 'top';
+        config.triggers = 'manual';
     }
 
     toggleValidateMe(p: string, set: boolean) {
@@ -77,7 +75,8 @@ export abstract class ComponentBase implements IComponentBase {
         return this.validationResult.IsValid;
     }
 
-    public showValidationTooltips() {
+    /* Method to be overridden in derived class */
+    public showValidationTooltips() : void {
 
     } 
 }

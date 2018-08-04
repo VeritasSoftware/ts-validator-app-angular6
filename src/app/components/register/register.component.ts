@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-
-//import { ValidationError, ValidationResult } from '../../core/validate'
 import { NgbTooltip, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+
 import { RegisterUser } from '../../models/models.component'
-import { ValidationService } from '../../services/validation-service';
 import { ComponentBase } from '../common/component-base';
 
 @Component({
@@ -14,11 +12,12 @@ import { ComponentBase } from '../common/component-base';
   host: {
     '(window:resize)': 'onResize($event)'
   },
-  providers: [NgbTooltipConfig, ValidationService]
+  providers: [NgbTooltipConfig]
 })
 export class RegisterComponent extends ComponentBase implements OnInit {  
   registerUser : RegisterUser;
   title: string = "Register"  
+
 
    @ViewChild('t') public tooltipName: NgbTooltip;
    @ViewChild('t1') public tooltipCreditCardNo: NgbTooltip;
@@ -27,8 +26,8 @@ export class RegisterComponent extends ComponentBase implements OnInit {
    @ViewChild('t4') public tooltipConfirmPwd: NgbTooltip;
    @ViewChild('t5') public tooltipEmail: NgbTooltip;
 
-  constructor(@Inject(DOCUMENT) document) { 
-    super(document);
+  constructor(@Inject(DOCUMENT) document, private config: NgbTooltipConfig) { 
+    super(document, config);    
 
     //Assign validation service method to be called in delegate
     this.validationAsyncDelegate = validationService => validationService.validateRegisterUserAsync(this.registerUser);
@@ -47,6 +46,7 @@ export class RegisterComponent extends ComponentBase implements OnInit {
     return this.IsValid(item, this.validationSyncDelegate);
   }
 
+  /* Override of base class method */
   showValidationTooltips() : void {
     this.showValidationTooltip("Name", this.tooltipName); 
     this.showValidationTooltip("CreditCardNo", this.tooltipCreditCardNo); 
