@@ -13,7 +13,7 @@ export interface IComponentBase {
     toggleValidateMe(item: string, set: boolean);
     IsValid(item: string, service:(validationService: ValidationService) => ValidationResult) : boolean;
     showValidationTooltip(error: string, tooltip: NgbTooltip): void;
-    validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void>
+    validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean>;
 }
   
 /************************/
@@ -68,12 +68,14 @@ export abstract class ComponentBase implements IComponentBase {
         }    
     }
 
-    async validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<void> {
+    async validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean> {
         this.validationResult = await service(this.validationService);
         
         this.validationResult.IsValid ?
             alert("Congrats! Validation passed.") :
-            this.showValidationTooltips();   
+            this.showValidationTooltips();
+            
+        return this.validationResult.IsValid;
     }
 
     public showValidationTooltips() {

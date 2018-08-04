@@ -57,6 +57,11 @@ export class RegisterComponent extends ComponentBase implements OnInit {
   }    
 
   async register() {
-     await this.validateFormAsync(this.validationAsyncDelegate);                            
+    var isValidModel = await this.validateFormAsync(this.validationAsyncDelegate); 
+    
+    if (isValidModel)
+    {
+      //do processing
+    }
  }
 }

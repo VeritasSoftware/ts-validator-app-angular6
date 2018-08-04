@@ -99,14 +99,24 @@ Base component class:
 Login component:
 ```typescript
   async login() {
-    await this.validateFormAsync(validationService => validationService.validateUserAsync(this.loginUser));                           
+    var isValidModel = await this.validateFormAsync(validationService => validationService.validateUserAsync(this.loginUser));                           
+
+    if (isValidModel)
+    {
+      //do processing
+    }
   }
 ```
 
 Register component:
 ```typescript
   async register() {
-     await this.validateFormAsync(validationService => validationService.validateRegisterUserAsync(this.registerUser));                            
+    var isValidModel = await this.validateFormAsync(validationService => validationService.validateRegisterUserAsync(this.registerUser)); 
+    
+    if (isValidModel)
+    {
+      //do processing
+    }
  }
 ```
 

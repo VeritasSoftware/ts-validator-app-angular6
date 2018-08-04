@@ -49,7 +49,12 @@ title: string = "Login"
   }  
 
   async login() {
-    await this.validateFormAsync(this.validationAsyncDelegate);                           
+    var isValidModel = await this.validateFormAsync(this.validationAsyncDelegate);                           
+
+    if (isValidModel)
+    {
+      //do processing
+    }
   }
 
 }
