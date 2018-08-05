@@ -13,12 +13,13 @@ div.tooltip-inner {
 }
 
 ::ng-deep .tooltip-inner {
-    padding: .25rem .5rem;
+    padding: 0.5px 0.5px 0.02px 10px !important;
     color: #fff;
     text-align: center;
     background-color: darkred !important;    
     border-radius: .25rem;
     max-width: 500px !important;
+    text-align: left;    
 }
 
 ::ng-deep .tooltip {

@@ -133,10 +133,11 @@ Register component:
         <div class="form-group">
             <label class="col-md-4">Id</label>
             <ng-template #tipContent>  
-                    <div class="tooltip-inner"
-                        *ngFor="let error of validationResult?.IdentifierStartsWith('Id')">
+                <ul class="tooltip-inner">
+                    <li *ngFor="let error of validationResult?.IdentifierStartsWith('Id')">
                         {{error.Message}}
-                    </div>                                
+                    </li>
+                </ul>                                
             </ng-template>
             <input 
                     type="text" 
