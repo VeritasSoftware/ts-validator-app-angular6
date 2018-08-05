@@ -20,10 +20,10 @@ export interface IComponentBase {
 /* Base component class */
 /************************/
 export abstract class ComponentBase implements IComponentBase {
+    public validationResult: ValidationResult = null;
+    
     protected validationAsyncDelegate: (validationService: ValidationService) => Promise<ValidationResult>;
-    protected validationSyncDelegate: (validationService: ValidationService) => ValidationResult;
-
-    protected validationResult: ValidationResult = null;
+    protected validationSyncDelegate: (validationService: ValidationService) => ValidationResult;    
 
     validationService: ValidationService;
 

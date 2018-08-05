@@ -25,19 +25,7 @@ class Employee {
  class Super {
     Name: string;
     Code: string;
- }
-
- /*TypeScript model*/
- class Person {
-   Name: string;
- }
-
- var validatePersonRules = (validator: IValidator<Person>) : ValidationResult => {
-  return validator
-            .NotEmpty(m => m.Name, "Name cannot be empty")
-          .Exec();
- };
-
+ } 
 
  var validateEmployeeRules = (validator: IValidator<Employee>) : ValidationResult => {
     return validator                              
@@ -115,15 +103,7 @@ describe('Validator Tests', () => {
 
     var validationResult = new Validator(model).Validate(validateEmployeeRules); 
     
-    expect(validationResult.IsValid).toBeTruthy();
-
-    var person = new Person();
-    person.Name = "Shane";
-
-    validationResult = new Validator(person).Validate(validatePersonRules); 
-    
-    expect(validationResult.IsValid).toBeTruthy();
-
+    expect(validationResult.IsValid).toBeTruthy();    
   });
 
   it('Accountant should have no validation errors - Sync', () => {    
@@ -187,14 +167,7 @@ describe('Validator Tests', () => {
 
     var validationResult = await new Validator(model).ValidateAsync(validateEmployeeRules); 
     
-    expect(validationResult.IsValid).toBeTruthy();
-    
-    var person = new Person();
-    person.Name = "Shane";
-
-    validationResult = await new Validator(person).ValidateAsync(validatePersonRules); 
-    
-    expect(validationResult.IsValid).toBeTruthy();
+    expect(validationResult.IsValid).toBeTruthy();        
   });
 
   it('Accountant should have no validation errors - Async', async () => {    
