@@ -146,7 +146,6 @@ Register component:
                     [(ngModel)]="loginUser.Id" 
                     (ngModelChange)="!validateMe('Id') ? t.open() : t.close()" 
                     [ngbTooltip]="tipContent"   
-                    [disableTooltip]="validationResult == null"
                     #t="ngbTooltip" 
                     placeholder="Id" />                  
         </div>
