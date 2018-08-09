@@ -7,7 +7,7 @@ import { ValidationService } from './validation-service'
   imports: [
     CommonModule
   ],
-  exports: [ValidationService],
+  exports: [],
   declarations: []
 })
 export class ServicesModule { }

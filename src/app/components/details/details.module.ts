@@ -5,7 +5,6 @@ import { DetailsComponent } from './details.component';
 @NgModule({
   imports: [
     CommonModule
-  ],
-  declarations: [DetailsComponent]
+  ]
 })
 export class DetailsModule { }

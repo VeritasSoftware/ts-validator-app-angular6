@@ -9,7 +9,6 @@ import { ValidationService } from '../../services/validation-service';
     CommonModule,
     FormsModule    
   ],
-  providers: [ValidationService],
-  declarations: [LoginComponent]
+  providers: [ValidationService]
 })
 export class LoginModule { }
