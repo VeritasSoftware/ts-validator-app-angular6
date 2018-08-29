@@ -27,7 +27,7 @@ export class ValidationService implements IValidationService {
         return validator 
             .NotEmpty(m => m.Id, "Id cannot be empty", "Id")
             .NotEmpty(m => m.Pwd, "Pwd cannot be empty", "Pwd")
-        .Exec();
+        .ToResult();
     };
 
     validateRegisterUserRules = (validator: IValidator<RegisterUser>) : ValidationResult => {
@@ -38,14 +38,14 @@ export class ValidationService implements IValidationService {
                                                 validator.For(m => m.CreditCardNo, creditCardValidator =>
                                                                                         creditCardValidator.Length(13, 19, "Credit Card Number length is invalid", "CreditCardNo:LengthInvalid")
                                                                                                            .CreditCard("Credit Card Number is invalid", "CreditCardNo:Invalid")
-                                                                                    .Exec()
+                                                                                    .ToResult()
                                                              )                                                                
-                                            .Exec())
+                                            .ToResult())
             .NotEmpty(m => m.Id, "Id cannot be empty", "Id:Empty")
             .NotEmpty(m => m.Email, "Email cannot be empty", "Email:Empty")
             .If(m => m.Email != "", validator =>
                                                 validator.Email(m => m.Email, "Email is invalid", "Email:Invalid")
-                                    .Exec())
+                                    .ToResult())
             .NotEmpty(m => m.Password, "Pwd cannot be empty", "Password:Empty")
             .NotEmpty(m => m.ConfirmPassword, "Confirm Pwd cannot be empty", "ConfirmPassword:Empty") 
             .If(m => m.Password != "", validator =>
@@ -53,9 +53,9 @@ export class ValidationService implements IValidationService {
                                                                                 passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid", "Password:InvalidStrength")
                                                                                                  .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3", "Password:LengthInvalid") 
                                                                                                  .Required((m, pwd) => pwd == m.ConfirmPassword, "Password and Confirm Password are not the same", "Password:ConfirmNotSame")
-                                                                          .Exec()
+                                                                          .ToResult()
                                                          )
-                                      .Exec())                    
-        .Exec();
+                                      .ToResult())                    
+        .ToResult();
     };    
 }
