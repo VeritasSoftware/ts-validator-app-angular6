@@ -25,7 +25,18 @@ class Employee {
  class Super {
     Name: string;
     Code: string;
- } 
+ }
+
+ var validateSuperRules =  (validator: IValidator<Super>) : ValidationResult => {
+  return validator
+            .NotNull(m => m.Name, "Should not be null", "Super.Name.Null")
+            .NotNull(m => m.Code, "Should not be null", "Super.Code.Null")
+            .If(m => m.Name != null && m.Code != null, validator => validator 
+                                                          .NotEmpty(m => m.Name, "Should not be empty", "Super.Name.Empty")
+                                                          .Matches(m => m.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
+                                                      .ToResult())
+        .ToResult();
+ };
 
  var validateEmployeeRules = (validator: IValidator<Employee>) : ValidationResult => {
     return validator                              
@@ -33,10 +44,7 @@ class Employee {
           .NotNull(m => m.CreditCards, "Should not be null", "CreditCard.Null")
           .NotNull(m => m.Super, "Should not be null", "Super.Null")
           .NotEmpty(m => m.Email, "Should not be empty", "Employee.Email.Empty")
-          .If(m => m.Super != null, validator => validator
-                                                          .NotEmpty(m => m.Super.Name, "Should not be empty", "Super.Code.Empty")
-                                                          .Matches(m => m.Super.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
-                                                .ToResult())
+          .If(m => m.Super != null, validator => validator.ForType(m => m.Super, validateSuperRules).ToResult())
           .If(m => m.Email != '', validator => 
                                               validator.Email(m => m.Email, "Should not be invalid", "Employee.Email.Invalid")
                                   .ToResult())  
