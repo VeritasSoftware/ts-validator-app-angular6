@@ -38,6 +38,17 @@ class Employee {
         .ToResult();
  };
 
+  var validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {
+  return validator
+            .NotNull(m => m.Name, "Should not be null", "CreditCard.Name.Null")
+            .NotNull(m => m.Number, "Should not be null", "CreditCard.Number.Null")
+            .If(m => m.Name != null && m.Number > 0, validator => validator 
+                                                          .NotEmpty(m => m.Name, "Should not be empty", "CreditCard.Name.Empty")
+                                                          .CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
+                                                      .ToResult())
+        .ToResult();
+ };
+
  var validateEmployeeRules = (validator: IValidator<Employee>) : ValidationResult => {
     return validator                              
           .NotEmpty(m => m.Name, "Should not be empty", "Employee.Name.Empty")
@@ -51,9 +62,7 @@ class Employee {
           .Required(m => m.CreditCards, (m, creditCards) => creditCards.length > 0, "Must have atleast 1 credit card", "CreditCard.Required")
           .If(m => m.CreditCards != null && m.CreditCards.length > 0, 
                       validator => validator
-                                          .ForEach(m => m.CreditCards, validator => 
-                                                                            validator.CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")                                                                                         
-                                                                      .ToResult())
+                                          .ForEach(m => m.CreditCards, validateCreditCardRules)
                                   .ToResult())
         .If(m => m.Password != '', validator => 
                                         validator.For(m => m.Password, passwordValidator =>
