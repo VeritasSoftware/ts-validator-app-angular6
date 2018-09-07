@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ValidationService } from './validation-service';
-import { ValidationResult } from '../core/validate/validation-result';
+import { ValidationResult } from 'ts.validator.fluent/dist/validation-result';
 import { User, RegisterUser } from '../models/models.component';
 
 describe('Validation Service Tests', () => {
