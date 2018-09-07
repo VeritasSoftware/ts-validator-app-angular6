@@ -27,7 +27,7 @@ import {Injectable} from '@angular/core';
 
 import { IValidationService } from './ivalidation-service';
 import { User, RegisterUser } from '../models/models.component';
-import { IValidator, Validator, ValidationResult } from '../core/validate';
+import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 @Injectable()
 export class ValidationService implements IValidationService {
