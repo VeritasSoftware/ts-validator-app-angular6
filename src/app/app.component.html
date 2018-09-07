@@ -2,23 +2,16 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header" style="width: 100%;">
-                    <table style="width: 100%;">
-                            <tr>
-                                <td>
-                                    <h1 style="text-align:center">
-                                        {{title}}
-                                    </h1>
-                                </td>
-                                <td style="text-align: right">
-                                    <ul class="nav navbar-nav">
-                                    <li><a routerLink="/home">Home</a></li>
-                                    <li><a routerLink="/login">Login</a></li>
-                                    <li><a routerLink="/register">Register</a></li>
-                                    <li><a routerLink="/details" >Details</a></li>
-                                    </ul>
-                                </td>
-                            </tr>
-                    </table>                  
+                    <ul class="nav navbar-nav horizontal">
+                            <li class="horizontal"><a routerLink="/home">Home</a></li>
+                            <li class="horizontal"><a routerLink="/login">Login</a></li>
+                            <li class="horizontal"><a routerLink="/register">Register</a></li>
+                            <li class="horizontal"><a routerLink="/details" >Details</a></li>
+                    </ul>
+
+                    <h1 style="text-align:center">
+                        {{title}}
+                    </h1>                    
             </div>            
         </div>
     </nav>    
