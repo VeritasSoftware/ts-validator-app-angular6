@@ -1,6 +1,6 @@
-# Angular 6 CLI app to demo the ts.validator TypeScript based generic validation framework.
+# Angular 6 CLI app to demo the ts.validator.fluent TypeScript based generic validation framework.
 
-[**ts.validator framework on GitHub**](https://github.com/VeritasSoftware/ts.validator)
+[**ts.validator.fluent framework on GitHub**](https://github.com/VeritasSoftware/ts.validator)
 
 [**Article on framework**](https://www.c-sharpcorner.com/article/ts-validator-typescript-based-generic-validation-framework/)
 
