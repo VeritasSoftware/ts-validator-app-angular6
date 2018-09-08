@@ -10,6 +10,8 @@
 
 [**Online demo app - Give it a try!**](https://ts-validator.firebaseapp.com)
 
+[**Online demo app with source code on stackblitz - Give it a try!**](https://stackblitz.com/edit/ts-validator-fluent)
+
 | Login | Register |
 | --- | -- |
 | ![Login validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Login.jpg) | ![Register validation](https://github.com/VeritasSoftware/ts-validator-app-angular6/blob/master/src/Register.jpg) | 
