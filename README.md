@@ -28,7 +28,7 @@ The app uses a **Service oriented approach to client-side validation**, with the
 import {Injectable} from '@angular/core';
 
 import { IValidationService } from './ivalidation-service';
-import { User, RegisterUser } from '../models/models.component';
+import { User, RegisterUser, AgeGroupEnum } from '../models/models.component';
 import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 @Injectable()
@@ -82,7 +82,11 @@ export class ValidationService implements IValidationService {
                                                                                                  .Required((m, pwd) => pwd == m.ConfirmPassword, "Password and Confirm Password are not the same", "Password:ConfirmNotSame")
                                                                           .ToResult()
                                                          )
-                                      .ToResult())                    
+                                      .ToResult())
+            .For(m => m.AgeGroup, ageGroupValidator => ageGroupValidator
+                                        .Required((m, ageGroup) => ageGroup != AgeGroupEnum.None, "Select Age Group", "AgeGroup.Empty")
+                                        .Required((m, ageGroup) => ageGroup == AgeGroupEnum.Minor ? m.IsParentalSupervisionProvided : true, "Check Parental Supervision", "IsParentalSupervisionProvided:Required")
+                                    .ToResult())
         .ToResult();
     };    
 }

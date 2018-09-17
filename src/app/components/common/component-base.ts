@@ -56,13 +56,15 @@ export abstract class ComponentBase implements IComponentBase {
         return !(errors != null && errors.length > 0);     
     }
 
-    showValidationTooltip(error: string, tooltip: NgbTooltip): void {    
-        tooltip.close();
-        var errors = this.validationResult.IdentifierStartsWith(error);
-        this.toggleValidateMe(error, errors.length > 0);
-        if (errors != null && errors.length > 0) {
-            setTimeout(()=> tooltip.open());    
-        }    
+    showValidationTooltip(error: string, tooltip: NgbTooltip): void {
+        if (tooltip != null) {
+            tooltip.close();
+            var errors = this.validationResult.IdentifierStartsWith(error);
+            this.toggleValidateMe(error, errors.length > 0);
+            if (errors != null && errors.length > 0) {
+                setTimeout(()=> tooltip.open());    
+            }   
+        }             
     }
 
     async validateFormAsync(service:(validationService: ValidationService) => Promise<ValidationResult>) : Promise<boolean> {

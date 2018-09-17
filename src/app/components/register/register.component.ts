@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core'
 import { DOCUMENT } from '@angular/common';
 import { NgbTooltip, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
-import { RegisterUser } from '../../models/models.component'
+import { RegisterUser, AgeGroup, AgeGroupEnum } from '../../models/models.component'
 import { ComponentBase } from '../common/component-base';
 
 @Component({
@@ -16,7 +16,8 @@ import { ComponentBase } from '../common/component-base';
 })
 export class RegisterComponent extends ComponentBase implements OnInit {  
   registerUser : RegisterUser;
-  title: string = "Register"  
+  title: string = "Register"
+  ageGroups: AgeGroup[];  
 
 
    @ViewChild('t') public tooltipName: NgbTooltip;
@@ -25,6 +26,8 @@ export class RegisterComponent extends ComponentBase implements OnInit {
    @ViewChild('t3') public tooltipPwd: NgbTooltip;
    @ViewChild('t4') public tooltipConfirmPwd: NgbTooltip;
    @ViewChild('t5') public tooltipEmail: NgbTooltip;
+   @ViewChild('t6') public tooltipAgeGroup: NgbTooltip;
+   @ViewChild('t7') public tooltipIsParentalSupervisionProvided: NgbTooltip;
 
   constructor(@Inject(DOCUMENT) document, private config: NgbTooltipConfig) { 
     super(document, config);    
@@ -35,7 +38,13 @@ export class RegisterComponent extends ComponentBase implements OnInit {
   }
 
   ngOnInit() {
-    this.registerUser = new RegisterUser("", "", "", "", "", "");
+    this.registerUser = new RegisterUser("", "", "", "", "", "", AgeGroupEnum.None, false);
+
+    this.ageGroups = [
+      new AgeGroup(AgeGroupEnum.None, "Choose an age group"),       
+      new AgeGroup(AgeGroupEnum.Adult, "Adult"),
+      new AgeGroup(AgeGroupEnum.Minor, "Minor (under 18)")
+   ];
   }
 
   async onResize(event){
@@ -54,6 +63,8 @@ export class RegisterComponent extends ComponentBase implements OnInit {
     this.showValidationTooltip("Password", this.tooltipPwd); 
     this.showValidationTooltip("ConfirmPassword", this.tooltipConfirmPwd); 
     this.showValidationTooltip("Email", this.tooltipEmail);
+    this.showValidationTooltip("AgeGroup", this.tooltipAgeGroup);    
+    this.showValidationTooltip("IsParentalSupervisionProvided", this.tooltipIsParentalSupervisionProvided);
   }    
 
   async register() {

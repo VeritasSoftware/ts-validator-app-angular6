@@ -118,6 +118,46 @@
                         #t4="ngbTooltip" 
                         placeholder="Confirm Password" />                  
             </div>
+            <div class="form-group"> 
+                <ng-template #tipContent6>                                        
+                    <ul class="tooltip-inner">
+                        <li *ngFor="let error of validationResult?.IdentifierStartsWith('AgeGroup')">
+                            {{error.Message}}
+                        </li>                            
+                    </ul>                     
+                </ng-template>                      
+                <select id="AgeGroup"
+                        name="AgeGroup"
+                        class="form-control"
+                        [(ngModel)]="registerUser.AgeGroup"                         
+                        (change)="!validateMe('AgeGroup') ? t6.open() : t6.close();"
+                        [ngbTooltip]="tipContent6" 
+                        #t6="ngbTooltip"                        
+                        placeholder="Age group"
+                    >
+                    <option [ngValue]="ageGroup.Val" *ngFor="let ageGroup of ageGroups">{{ageGroup.Text}}</option>                                                            
+                </select>                               
+            </div>
+            <div class="form-group" *ngIf="registerUser.AgeGroup == 2">
+                <ng-template #tipContent7>                    
+                    <ul class="tooltip-inner">
+                        <li *ngFor="let error of validationResult?.IdentifierStartsWith('IsParentalSupervisionProvided')">
+                            {{error.Message}}
+                        </li>
+                    </ul>                    
+                </ng-template>                      
+                <label for="IsParentalSupervisionProvided">Parental Supervision Provided</label>            
+                <input 
+                        type="checkbox" 
+                        id="IsParentalSupervisionProvided"
+                        name="IsParentalSupervisionProvided"
+                        class="form-control"                         
+                        [(ngModel)]="registerUser.IsParentalSupervisionProvided" 
+                        (ngModelChange)="!validateMe('IsParentalSupervisionProvided') ? t7.open() : t7.close()" 
+                        [ngbTooltip]="tipContent7" 
+                        #t7="ngbTooltip"                         
+                        />                                  
+            </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" style="width: 40%; height: 50px;" (click)="register()">Register</button>
             </div>                                             
