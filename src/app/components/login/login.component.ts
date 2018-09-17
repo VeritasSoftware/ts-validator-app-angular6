@@ -34,7 +34,7 @@ title: string = "Login"
   }
 
   async onResize(event){
-    await this.validateFormAsync(this.validationAsyncDelegate);
+    //await this.validateFormAsync(this.validationAsyncDelegate);
   }  
 
   validateMe(item: string) : boolean {
