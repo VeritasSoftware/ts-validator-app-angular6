@@ -138,7 +138,7 @@
                     <option [ngValue]="ageGroup.Val" *ngFor="let ageGroup of ageGroups">{{ageGroup.Text}}</option>                                                            
                 </select>                               
             </div>
-            <div class="form-group" *ngIf="registerUser.AgeGroup == 2">
+            <div id="checkBoxField" class="form-group" *ngIf="registerUser.AgeGroup == 2">
                 <ng-template #tipContent7>                    
                     <ul class="tooltip-inner">
                         <li *ngFor="let error of validationResult?.IdentifierStartsWith('IsParentalSupervisionProvided')">
@@ -146,8 +146,8 @@
                         </li>
                     </ul>                    
                 </ng-template>                      
-                <label for="IsParentalSupervisionProvided">Parental Supervision Provided</label>            
-                <input 
+                <div style="margin:auto;">
+                    <input 
                         type="checkbox" 
                         id="IsParentalSupervisionProvided"
                         name="IsParentalSupervisionProvided"
@@ -156,7 +156,9 @@
                         (ngModelChange)="!validateMe('IsParentalSupervisionProvided') ? t7.open() : t7.close()" 
                         [ngbTooltip]="tipContent7" 
                         #t7="ngbTooltip"                         
-                        />                                  
+                        />
+                    <label for="IsParentalSupervisionProvided">Parental Supervision Provided</label>                        
+                </div>                            
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" style="width: 40%; height: 50px;" (click)="register()">Register</button>
