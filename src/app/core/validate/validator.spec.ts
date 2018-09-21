@@ -27,6 +27,44 @@ class Employee {
     Code: string;
  }
 
+ class StringAPITest {
+   IsLowercase: string;
+   IsUppercase: string;
+   IsMixedcase: string;
+   IsGuid: string;
+   IsBase64: string;
+   IsUrl: string;
+   IsNumeric: string;
+   IsAlpha: string;
+   IsAlphaNumeric: string;
+   Contains: string;
+ }
+
+ class StringAPITestProperty {
+  StringAPITest: StringAPITest;
+ }
+
+ var validateStringAPITest = (validator: IValidator<StringAPITest>) : ValidationResult => {
+  return validator
+            .IsLowercase(m => m.IsLowercase, "Should be lower case")
+            .IsUppercase(m => m.IsUppercase, "Should be upper case")
+            .IsMixedcase(m => m.IsMixedcase, "Should be mixed case")
+            .IsGuid(m => m.IsGuid, "Should be guid/uuid")
+            .IsBase64(m => m.IsBase64, "Should be base64")
+            .IsUrl(m => m.IsUrl, "Should be url")
+            .IsNumeric(m => m.IsNumeric, "Should be numeric")
+            .IsAlpha(m => m.IsAlpha, "Should be alpha")
+            .IsAlphaNumeric(m => m.IsAlphaNumeric, "Should be alpha numeric")
+            .Contains(m => m.Contains, "test", "Should contain test") 
+        .ToResult();
+ };
+
+ var validateStringAPITestProperty = (validator: IValidator<StringAPITestProperty>) : ValidationResult => {
+   return validator
+                .ForType(m => m.StringAPITest, validateStringAPITest)
+        .ToResult();
+ };
+
  var validateSuperRules =  (validator: IValidator<Super>) : ValidationResult => {
   return validator
             .NotNull(m => m.Name, "Should not be null", "Super.Name.Null")
@@ -122,6 +160,46 @@ describe('Validator Tests', () => {
     
     expect(validationResult.IsValid).toBeTruthy();    
   });
+
+  it('StringAPITest should have no validation errors - Sync', () => {
+    var model = new StringAPITest();
+    
+    model.IsLowercase = "ayb";
+    model.IsUppercase = "AHY";
+    model.IsMixedcase = "arT";
+    model.IsGuid = "7e070f9a-e46c-4657-b12f-8e50a9a1429f";
+    model.IsBase64 = "VGhpcyBpcyBhIHRlc3Q=";
+    model.IsUrl = "https://nortonsafe.search.ask.com/web?q=javascript+url+regex&o=APN11908&chn=32430&guid=A1D1CC2B-4476-4247-AC22-F1695C86CC52&doi=2018-03-03&ver=22.10.0.85&prt=NSBU&geo=AU&locale=en_AU&trackId=direct";
+    model.IsNumeric = "456";
+    model.IsAlpha = "aZ";
+    model.IsAlphaNumeric = "aB9";
+    model.Contains = "For test purpose";
+
+    var validationResult = new Validator(model).Validate(validateStringAPITest); 
+    
+    expect(validationResult.IsValid).toBeTruthy();    
+  });
+
+  it('StringAPITestProperty should have no validation errors - Sync', () => {
+    var model = new StringAPITestProperty();
+
+    model.StringAPITest = new StringAPITest();
+    
+    model.StringAPITest.IsLowercase = "ayb";
+    model.StringAPITest.IsUppercase = "AHY";
+    model.StringAPITest.IsMixedcase = "arT";
+    model.StringAPITest.IsGuid = "7e070f9a-e46c-4657-b12f-8e50a9a1429f";
+    model.StringAPITest.IsBase64 = "VGhpcyBpcyBhIHRlc3Q=";
+    model.StringAPITest.IsUrl = "https://nortonsafe.search.ask.com/web?q=javascript+url+regex&o=APN11908&chn=32430&guid=A1D1CC2B-4476-4247-AC22-F1695C86CC52&doi=2018-03-03&ver=22.10.0.85&prt=NSBU&geo=AU&locale=en_AU&trackId=direct";
+    model.StringAPITest.IsNumeric = "456";
+    model.StringAPITest.IsAlpha = "aZ";
+    model.StringAPITest.IsAlphaNumeric = "aB9";
+    model.StringAPITest.Contains = "For test purpose";
+
+    var validationResult = new Validator(model).Validate(validateStringAPITestProperty); 
+    
+    expect(validationResult.IsValid).toBeTruthy();    
+  });  
 
   it('Accountant should have no validation errors - Sync', () => {    
     var accountant = new Accountant();
