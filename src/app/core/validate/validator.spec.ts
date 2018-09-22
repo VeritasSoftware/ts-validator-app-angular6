@@ -34,6 +34,7 @@ class Employee {
    IsGuid: string;
    IsBase64: string;
    IsUrl: string;
+   IsCountryCode: string;
    IsNumeric: string;
    IsAlpha: string;
    IsAlphaNumeric: string;
@@ -52,6 +53,7 @@ class Employee {
             .IsGuid(m => m.IsGuid, "Should be guid/uuid")
             .IsBase64(m => m.IsBase64, "Should be base64")
             .IsUrl(m => m.IsUrl, "Should be url")
+            .IsCountryCode(m => m.IsCountryCode, "Should be country code")
             .IsNumeric(m => m.IsNumeric, "Should be numeric")
             .IsAlpha(m => m.IsAlpha, "Should be alpha")
             .IsAlphaNumeric(m => m.IsAlphaNumeric, "Should be alpha numeric")
@@ -169,7 +171,8 @@ describe('Validator Tests', () => {
     model.IsMixedcase = "arT";
     model.IsGuid = "7e070f9a-e46c-4657-b12f-8e50a9a1429f";
     model.IsBase64 = "VGhpcyBpcyBhIHRlc3Q=";
-    model.IsUrl = "https://nortonsafe.search.ask.com/web?q=javascript+url+regex&o=APN11908&chn=32430&guid=A1D1CC2B-4476-4247-AC22-F1695C86CC52&doi=2018-03-03&ver=22.10.0.85&prt=NSBU&geo=AU&locale=en_AU&trackId=direct";
+    model.IsUrl = "https://nortonsafe.search.ask.com/web?chn=32430&cmpgn=&doi=2018-03-03&geo=AU&guid=A1D1CC2B-4476-4247-AC22-F1695C86CC52&locale=en_AU&o=APN11908&p2=%5EET%5Ecd20au%5Edirect&prt=NSBU&trackId=direct&ver=22.10.0.85&tpr=2&enc=2&q=PVEBDevK0oZq4h-WvUP1_kRpuMFkYmfb60viD1qkqjYFCVU3oPcBSgbbFhTZI3N3qFNptWm6p8q-uCzQ5qr4zlZpT6qq5JI0oSoAwg152MgBxAXu8KKMG6hZZGq-r1bmGWiB0o1qSokuyiBrpdBqM5H2Cxf0B56PXqc7I2MDU4Ksb648wAzLsHiiCjRKZgcMiQKjpS52xFvKP3YqnhDP6ecN-Y9rJp6sBx4spoNjQFaaOvzwHItON7JIoRI_SJn3ZnIVft8tDiTMNVf9DK0L937HhHm_TQWNFWnCrwVKembBx1nvQVQUHXd7-h5K1KBBgRUBF3d4AInt0zx2-3h_fA&ts=1537580232048";
+    model.IsCountryCode = "AU";
     model.IsNumeric = "456";
     model.IsAlpha = "aZ";
     model.IsAlphaNumeric = "aB9";
@@ -190,7 +193,8 @@ describe('Validator Tests', () => {
     model.StringAPITest.IsMixedcase = "arT";
     model.StringAPITest.IsGuid = "7e070f9a-e46c-4657-b12f-8e50a9a1429f";
     model.StringAPITest.IsBase64 = "VGhpcyBpcyBhIHRlc3Q=";
-    model.StringAPITest.IsUrl = "https://nortonsafe.search.ask.com/web?q=javascript+url+regex&o=APN11908&chn=32430&guid=A1D1CC2B-4476-4247-AC22-F1695C86CC52&doi=2018-03-03&ver=22.10.0.85&prt=NSBU&geo=AU&locale=en_AU&trackId=direct";
+    model.StringAPITest.IsUrl = "https://nortonsafe.search.ask.com/web?chn=32430&cmpgn=&doi=2018-03-03&geo=AU&guid=A1D1CC2B-4476-4247-AC22-F1695C86CC52&locale=en_AU&o=APN11908&p2=%5EET%5Ecd20au%5Edirect&prt=NSBU&trackId=direct&ver=22.10.0.85&tpr=2&enc=2&q=PVEBDevK0oZq4h-WvUP1_kRpuMFkYmfb60viD1qkqjYFCVU3oPcBSgbbFhTZI3N3qFNptWm6p8q-uCzQ5qr4zlZpT6qq5JI0oSoAwg152MgBxAXu8KKMG6hZZGq-r1bmGWiB0o1qSokuyiBrpdBqM5H2Cxf0B56PXqc7I2MDU4Ksb648wAzLsHiiCjRKZgcMiQKjpS52xFvKP3YqnhDP6ecN-Y9rJp6sBx4spoNjQFaaOvzwHItON7JIoRI_SJn3ZnIVft8tDiTMNVf9DK0L937HhHm_TQWNFWnCrwVKembBx1nvQVQUHXd7-h5K1KBBgRUBF3d4AInt0zx2-3h_fA&ts=1537580232048";
+    model.StringAPITest.IsCountryCode = "AU";
     model.StringAPITest.IsNumeric = "456";
     model.StringAPITest.IsAlpha = "aZ";
     model.StringAPITest.IsAlphaNumeric = "aB9";
