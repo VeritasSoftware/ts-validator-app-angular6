@@ -6,8 +6,6 @@
 
 [**NPM package**](https://www.npmjs.com/package/ts.validator.fluent)
 
-[**Article**](https://www.c-sharpcorner.com/article/ts-validator-typescript-based-generic-validation-framework/)
-
 [**Online demo app - Give it a try!**](https://ts-validator.firebaseapp.com)
 
 [**Online demo app with source code on stackblitz - Give it a try!**](https://stackblitz.com/edit/ts-validator-fluent)
