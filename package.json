@@ -24,7 +24,7 @@
     "core-js": "^2.5.4",
     "ng-bootstrap": "^1.6.3",
     "rxjs": "^6.0.0",
-    "ts.validator.fluent": "^1.0.2",
+    "ts.validator.fluent": "^1.1.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

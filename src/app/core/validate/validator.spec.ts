@@ -5,6 +5,7 @@ import { Validator } from './validator';
 import { ValidationResult } from './validation-result';
 
 //import { IValidator, Validator, ValidationResult } from '../../../../../ts.validator/dist';
+//import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 class Employee {
     Name: string;
