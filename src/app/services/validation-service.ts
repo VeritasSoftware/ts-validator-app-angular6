@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
+//import { IValidator, Validator, ValidationResult } from '../core/validate';
+import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 import { IValidationService } from './ivalidation-service';
 import { User, RegisterUser, AgeGroupEnum } from '../models/models.component';
-//import { IValidator, Validator, ValidationResult } from '../core/validate';
-import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 @Injectable()
 export class ValidationService implements IValidationService {
@@ -50,11 +50,11 @@ export class ValidationService implements IValidationService {
             .NotEmpty(m => m.Password, "Pwd cannot be empty", "Password:Empty")
             .NotEmpty(m => m.ConfirmPassword, "Confirm Pwd cannot be empty", "ConfirmPassword:Empty") 
             .If(m => m.Password != "", validator =>
-                                            validator.For(m => m.Password, passwordValidator => 
-                                                                                passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid", "Password:InvalidStrength")
-                                                                                                 .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3", "Password:LengthInvalid") 
-                                                                                                 .Required((m, pwd) => pwd == m.ConfirmPassword, "Password and Confirm Password are not the same", "Password:ConfirmNotSame")
-                                                                          .ToResult()
+                                            validator.ForStringProperty(m => m.Password, passwordValidator => 
+                                                                passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid", "Password:InvalidStrength")
+                                                                                 .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3", "Password:LengthInvalid") 
+                                                                                 .Required((m, pwd) => pwd == m.ConfirmPassword, "Password and Confirm Password are not the same", "Password:ConfirmNotSame")
+                                                            .ToResult()
                                                          )
                                       .ToResult())
             .For(m => m.AgeGroup, ageGroupValidator => ageGroupValidator

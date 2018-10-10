@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IValidator } from './ivalidator';
-import { Validator } from './validator';
-import { ValidationResult } from './validation-result';
+// import { IValidator } from './ivalidator';
+// import { Validator } from './validator';
+// import { ValidationResult } from './validation-result';
 
 //import { IValidator, Validator, ValidationResult } from '../../../../../ts.validator/dist';
-//import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
+import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 class Employee {
     Name: string;
@@ -23,6 +23,7 @@ class Employee {
  class CreditCard {
    Number: number;
    Name: string;
+   ExpiryDate: Date;
  }
  
  class Super {
@@ -30,7 +31,7 @@ class Employee {
     Code: string;
  }
 
- class StringAPITest {
+ class StringRulesTest {
    IsLowercase: string;
    IsUppercase: string;
    IsMixedcase: string;
@@ -44,11 +45,21 @@ class Employee {
    Contains: string;
  }
 
- class StringAPITestProperty {
-  StringAPITest: StringAPITest;
+ class DateRulesTest {
+   IsDateAfter: Date;
+   IsDateOnOrAfter: Date;
+   IsDateBefore: Date;
+   IsDateOnOrBefore: Date;
+   IsDateBetweenInclusive: Date;
+   IsDateBetweenExclusive: Date;
+   IsDateLeapYear: Date
  }
 
- var validateStringAPITest = (validator: IValidator<StringAPITest>) : ValidationResult => {
+ class StringRulesTestProperty {
+  StringRulesTest: StringRulesTest;
+ }
+
+ var validateStringRulesTest = (validator: IValidator<StringRulesTest>) : ValidationResult => {
   return validator
             .IsLowercase(m => m.IsLowercase, "Should be lower case")
             .IsUppercase(m => m.IsUppercase, "Should be upper case")
@@ -64,9 +75,9 @@ class Employee {
         .ToResult();
  };
 
- var validateStringAPITestProperty = (validator: IValidator<StringAPITestProperty>) : ValidationResult => {
+ var validateStringRulesTestProperty = (validator: IValidator<StringRulesTestProperty>) : ValidationResult => {
    return validator
-                .ForType(m => m.StringAPITest, validateStringAPITest)
+                .ForType(m => m.StringRulesTest, validateStringRulesTest)
         .ToResult();
  };
 
@@ -81,13 +92,17 @@ class Employee {
         .ToResult();
  };
 
-  var validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {
+ var today = new Date();
+
+ var validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {  
   return validator
             .NotNull(m => m.Name, "Should not be null", "CreditCard.Name.Null")
             .NotNull(m => m.Number, "Should not be null", "CreditCard.Number.Null")
-            .If(m => m.Name != null && m.Number > 0, validator => validator 
+            .NotNull(m => m.ExpiryDate, "Should not be null", "CreditCard.ExpiryDate.Null")
+            .If(m => m.Name != null && m.Number > 0 && m.ExpiryDate != null, validator => validator 
                                                           .NotEmpty(m => m.Name, "Should not be empty", "CreditCard.Name.Empty")
                                                           .CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
+                                                          .IsDateOnOrAfter(m => m.ExpiryDate, new Date(), "Should be on or after today's date", "CreditCard.ExpiryDate.Invalid")
                                                       .ToResult())
         .ToResult();
  };
@@ -102,18 +117,18 @@ class Employee {
           .If(m => m.Email != '', validator => 
                                               validator.Email(m => m.Email, "Should not be invalid", "Employee.Email.Invalid")
                                   .ToResult())  
-          .Required(m => m.CreditCards, (m, creditCards) => creditCards.length > 0, "Must have atleast 1 credit card", "CreditCard.Required")
+          .Required(m => m.CreditCards, (m, creditCards) => creditCards.length > 0, "Must have atleast 1 credit card", "Employee.CreditCards.Required")
           .If(m => m.CreditCards != null && m.CreditCards.length > 0, 
                       validator => validator
                                           .ForEach(m => m.CreditCards, validateCreditCardRules)
                                   .ToResult())
-        .If(m => m.Password != '', validator => 
-                                        validator.For(m => m.Password, passwordValidator =>
-                                                                          passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid")
-                                                                                           .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3")
-                                                                                           .Required((m, pwd) => !m.PreviousPasswords.some(prevPwd => prevPwd == pwd), "Password is already used")
-                                                                      .ToResult())
-                                        .ToResult())                                                                                                                    
+          .If(m => m.Password != '', validator => validator
+                                          .ForStringProperty(m => m.Password, passwordValidator => passwordValidator
+                                                  .Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid", "Employee.Password.Strength")
+                                                  .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3", "Employee.Password.Length")
+                                                  .Required((m, pwd) => !m.PreviousPasswords.some(prevPwd => prevPwd == pwd), "Password is already used", "Employee.Password.AlreadyUsed")
+                                              .ToResult())
+                                     .ToResult())                                                                                                                    
     .ToResult();
  };
 
@@ -145,13 +160,19 @@ describe('Validator Tests', () => {
     model.PreviousPasswords.push("sD4A1");
     model.PreviousPasswords.push("sD4A2");
 
+    var expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate());
+
+
     model.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
     masterCard.Number = 5105105105105100;
     masterCard.Name = "John Doe"
+    masterCard.ExpiryDate = expiryDate;
     var amexCard = new CreditCard();
     amexCard.Number = 371449635398431;
     amexCard.Name = "John Doe"
+    amexCard.ExpiryDate = expiryDate;
     model.CreditCards.push(masterCard);
     model.CreditCards.push(amexCard);
 
@@ -166,8 +187,8 @@ describe('Validator Tests', () => {
     expect(validationResult.IsValid).toBeTruthy();    
   });
 
-  it('StringAPITest should have no validation errors - Sync', () => {
-    var model = new StringAPITest();
+  it('StringRulesTest should have no validation errors - Sync', () => {
+    var model = new StringRulesTest();
     
     model.IsLowercase = "ayb";
     model.IsUppercase = "AHY";
@@ -181,29 +202,29 @@ describe('Validator Tests', () => {
     model.IsAlphaNumeric = "aB9";
     model.Contains = "For test purpose";
 
-    var validationResult = new Validator(model).Validate(validateStringAPITest); 
+    var validationResult = new Validator(model).Validate(validateStringRulesTest); 
     
     expect(validationResult.IsValid).toBeTruthy();    
   });
 
-  it('StringAPITestProperty should have no validation errors - Sync', () => {
-    var model = new StringAPITestProperty();
+  it('StringRulesTestProperty should have no validation errors - Sync', () => {
+    var model = new StringRulesTestProperty();
 
-    model.StringAPITest = new StringAPITest();
+    model.StringRulesTest = new StringRulesTest();
     
-    model.StringAPITest.IsLowercase = "ayb";
-    model.StringAPITest.IsUppercase = "AHY";
-    model.StringAPITest.IsMixedcase = "arT";
-    model.StringAPITest.IsGuid = "7e070f9a-e46c-4657-b12f-8e50a9a1429f";
-    model.StringAPITest.IsBase64 = "VGhpcyBpcyBhIHRlc3Q=";
-    model.StringAPITest.IsUrl = "https://nortonsafe.search.ask.com/web?chn=32430&cmpgn=&doi=2018-03-03&geo=AU&guid=A1D1CC2B-4476-4247-AC22-F1695C86CC52&locale=en_AU&o=APN11908&p2=%5EET%5Ecd20au%5Edirect&prt=NSBU&trackId=direct&ver=22.10.0.85&tpr=2&enc=2&q=PVEBDevK0oZq4h-WvUP1_kRpuMFkYmfb60viD1qkqjYFCVU3oPcBSgbbFhTZI3N3qFNptWm6p8q-uCzQ5qr4zlZpT6qq5JI0oSoAwg152MgBxAXu8KKMG6hZZGq-r1bmGWiB0o1qSokuyiBrpdBqM5H2Cxf0B56PXqc7I2MDU4Ksb648wAzLsHiiCjRKZgcMiQKjpS52xFvKP3YqnhDP6ecN-Y9rJp6sBx4spoNjQFaaOvzwHItON7JIoRI_SJn3ZnIVft8tDiTMNVf9DK0L937HhHm_TQWNFWnCrwVKembBx1nvQVQUHXd7-h5K1KBBgRUBF3d4AInt0zx2-3h_fA&ts=1537580232048";
-    model.StringAPITest.IsCountryCode = "AU";
-    model.StringAPITest.IsNumeric = "456";
-    model.StringAPITest.IsAlpha = "aZ";
-    model.StringAPITest.IsAlphaNumeric = "aB9";
-    model.StringAPITest.Contains = "For test purpose";
+    model.StringRulesTest.IsLowercase = "ayb";
+    model.StringRulesTest.IsUppercase = "AHY";
+    model.StringRulesTest.IsMixedcase = "arT";
+    model.StringRulesTest.IsGuid = "7e070f9a-e46c-4657-b12f-8e50a9a1429f";
+    model.StringRulesTest.IsBase64 = "VGhpcyBpcyBhIHRlc3Q=";
+    model.StringRulesTest.IsUrl = "https://nortonsafe.search.ask.com/web?chn=32430&cmpgn=&doi=2018-03-03&geo=AU&guid=A1D1CC2B-4476-4247-AC22-F1695C86CC52&locale=en_AU&o=APN11908&p2=%5EET%5Ecd20au%5Edirect&prt=NSBU&trackId=direct&ver=22.10.0.85&tpr=2&enc=2&q=PVEBDevK0oZq4h-WvUP1_kRpuMFkYmfb60viD1qkqjYFCVU3oPcBSgbbFhTZI3N3qFNptWm6p8q-uCzQ5qr4zlZpT6qq5JI0oSoAwg152MgBxAXu8KKMG6hZZGq-r1bmGWiB0o1qSokuyiBrpdBqM5H2Cxf0B56PXqc7I2MDU4Ksb648wAzLsHiiCjRKZgcMiQKjpS52xFvKP3YqnhDP6ecN-Y9rJp6sBx4spoNjQFaaOvzwHItON7JIoRI_SJn3ZnIVft8tDiTMNVf9DK0L937HhHm_TQWNFWnCrwVKembBx1nvQVQUHXd7-h5K1KBBgRUBF3d4AInt0zx2-3h_fA&ts=1537580232048";
+    model.StringRulesTest.IsCountryCode = "AU";
+    model.StringRulesTest.IsNumeric = "456";
+    model.StringRulesTest.IsAlpha = "aZ";
+    model.StringRulesTest.IsAlphaNumeric = "aB9";
+    model.StringRulesTest.Contains = "For test purpose";
 
-    var validationResult = new Validator(model).Validate(validateStringAPITestProperty); 
+    var validationResult = new Validator(model).Validate(validateStringRulesTestProperty); 
     
     expect(validationResult.IsValid).toBeTruthy();    
   });  
@@ -211,6 +232,8 @@ describe('Validator Tests', () => {
   it('Accountant should have no validation errors - Sync', () => {    
     var accountant = new Accountant();
     accountant.Code = "ACC001";
+
+    //Employee data
     accountant.Name = "John Doe";
 
     accountant.Password = "sD4A3";
@@ -219,13 +242,17 @@ describe('Validator Tests', () => {
     accountant.PreviousPasswords.push("sD4A1");
     accountant.PreviousPasswords.push("sD4A2");
 
+    var expiryDate = new Date();
+
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
     masterCard.Number = 5105105105105100;
     masterCard.Name = "John Doe"
+    masterCard.ExpiryDate = expiryDate;
     var amexCard = new CreditCard();
     amexCard.Number = 371449635398431;
-    amexCard.Name = "John Doe"
+    amexCard.Name = "John Doe";
+    amexCard.ExpiryDate = expiryDate;
     accountant.CreditCards.push(masterCard);
     accountant.CreditCards.push(amexCard);
 
@@ -251,13 +278,18 @@ describe('Validator Tests', () => {
     model.PreviousPasswords.push("sD4A1");
     model.PreviousPasswords.push("sD4A2");
 
+    var date = new Date();
+    date.setDate(date.getDate());
+
     model.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
     masterCard.Number = 5105105105105100;
-    masterCard.Name = "John Doe"
+    masterCard.Name = "John Doe";
+    masterCard.ExpiryDate = date;
     var amexCard = new CreditCard();
     amexCard.Number = 371449635398431;
-    amexCard.Name = "John Doe"
+    amexCard.Name = "John Doe";
+    amexCard.ExpiryDate = date;
     model.CreditCards.push(masterCard);
     model.CreditCards.push(amexCard);
 
@@ -283,13 +315,18 @@ describe('Validator Tests', () => {
     accountant.PreviousPasswords.push("sD4A1");
     accountant.PreviousPasswords.push("sD4A2");
 
+    var date = new Date();
+    date.setDate(date.getDate());
+
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
     masterCard.Number = 5105105105105100;
-    masterCard.Name = "John Doe"
+    masterCard.Name = "John Doe";
+    masterCard.ExpiryDate = date;
     var amexCard = new CreditCard();
     amexCard.Number = 371449635398431;
-    amexCard.Name = "John Doe"
+    amexCard.Name = "John Doe";
+    amexCard.ExpiryDate = date;
     accountant.CreditCards.push(masterCard);
     accountant.CreditCards.push(amexCard);
 
@@ -316,13 +353,18 @@ describe('Validator Tests', () => {
     accountant.PreviousPasswords.push("sD4A1");
     accountant.PreviousPasswords.push("sD4A2");
 
+    var date = new Date();
+    date.setDate(date.getDate());
+
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
     masterCard.Number = 5105105105105100;
-    masterCard.Name = "John Doe"
+    masterCard.Name = "John Doe";
+    masterCard.ExpiryDate = date;
     var amexCard = new CreditCard();
     amexCard.Number = 371449635398431;
-    amexCard.Name = "John Doe"
+    amexCard.Name = "John Doe";
+    amexCard.ExpiryDate = date;
     accountant.CreditCards.push(masterCard);
     accountant.CreditCards.push(amexCard);
 
@@ -354,13 +396,18 @@ describe('Validator Tests', () => {
     accountant.PreviousPasswords.push("sD4A1");
     accountant.PreviousPasswords.push("sD4A2");
 
+    var date = new Date();
+    date.setDate(date.getDate());
+
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
     masterCard.Number = 5105105105105100;
-    masterCard.Name = "John Doe"
+    masterCard.Name = "John Doe";
+    masterCard.ExpiryDate = date;
     var amexCard = new CreditCard();
     amexCard.Number = 371449635398431;
-    amexCard.Name = "John Doe"
+    amexCard.Name = "John Doe";
+    amexCard.ExpiryDate = date;
     accountant.CreditCards.push(masterCard);
     accountant.CreditCards.push(amexCard);
 
@@ -392,13 +439,18 @@ describe('Validator Tests', () => {
     accountant.PreviousPasswords.push("sD4A1");
     accountant.PreviousPasswords.push("sD4A2");
 
+    var date = new Date();
+    date.setDate(date.getDate());
+
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
     masterCard.Number = 5105105105105100;
-    masterCard.Name = "John Doe"
+    masterCard.Name = "John Doe";
+    masterCard.ExpiryDate = date;
     var amexCard = new CreditCard();
     amexCard.Number = 371449635398431;
-    amexCard.Name = "John Doe"
+    amexCard.Name = "John Doe";
+    amexCard.ExpiryDate = date;
     accountant.CreditCards.push(masterCard);
     accountant.CreditCards.push(amexCard);
 
