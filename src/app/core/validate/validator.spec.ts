@@ -4,8 +4,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 // import { Validator } from './validator';
 // import { ValidationResult } from './validation-result';
 
-//import { IValidator, Validator, ValidationResult } from '../../../../../ts.validator/dist';
-import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
+import { IValidator, Validator, ValidationResult } from '../../../../../ts.validator/dist';
+//import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 class Employee {
     Name: string;
@@ -55,9 +55,64 @@ class Employee {
    IsDateLeapYear: Date
  }
 
+ class NumberRulesTest {
+    IsNumberEqual: Number;
+    IsNumberNotEqual: Number;
+    IsNumberLessThan: Number;
+    IsNumberLessThanOrEqual: Number;
+    IsNumberGreaterThan: Number;
+    IsNumberGreaterThanOrEqual: Number;
+    
+    IsNumberEqualProperty: Number;
+    IsNumberNotEqualProperty: Number;
+    IsNumberLessThanProperty: Number;
+    IsNumberLessThanOrEqualProperty: Number;
+    IsNumberGreaterThanProperty: Number;
+    IsNumberGreaterThanOrEqualProperty: Number;
+
+    CreditCardProperty: Number;
+
+    RequiredProperty: Number;
+}
+
  class StringRulesTestProperty {
   StringRulesTest: StringRulesTest;
- }
+ }  
+
+ var validateNumberRulesTest = (validator: IValidator<NumberRulesTest>) : ValidationResult => {
+   return validator
+              .IsNumberEqual(m => m.IsNumberEqual, 1, "Should be equal")
+              .IsNumberNotEqual(m => m.IsNumberNotEqual, 1, "Should be equal")
+              .IsNumberLessThan(m => m.IsNumberLessThan,1, "Should be less than")
+              .IsNumberLessThanOrEqual(m => m.IsNumberLessThanOrEqual,1, "Should be less than or equal to")
+              .IsNumberGreaterThan(m => m.IsNumberGreaterThan,1, "Should be greater than")
+              .IsNumberGreaterThanOrEqual(m => m.IsNumberGreaterThanOrEqual,1, "Should be greater than to equal to")
+              .ForNumberProperty(m => m.IsNumberEqualProperty, validator => validator
+                                                                          .IsNumberEqual(1, "Should be equal")
+                                                                    .ToResult()) 
+              .ForNumberProperty(m => m.IsNumberNotEqualProperty, validator => validator
+                                                                          .IsNumberNotEqual(1, "Should not be equal")
+                                                                    .ToResult())                                                                    
+              .ForNumberProperty(m => m.IsNumberLessThanProperty, validator => validator
+                                                                          .IsNumberLessThan(1, "Should be less than")
+                                                                    .ToResult())
+              .ForNumberProperty(m => m.IsNumberLessThanOrEqualProperty, validator => validator
+                                                                          .IsNumberLessThanOrEqual(1, "Should be less than or equal")
+                                                                    .ToResult())
+              .ForNumberProperty(m => m.IsNumberGreaterThanProperty, validator => validator
+                                                                          .IsNumberGreaterThan(1, "Should be greater than")
+                                                                    .ToResult())                                                                    
+              .ForNumberProperty(m => m.IsNumberGreaterThanOrEqualProperty, validator => validator
+                                                                          .IsNumberGreaterThanOrEqual(1, "Should be greater than or equal")
+                                                                    .ToResult())
+              .ForNumberProperty(m => m.CreditCardProperty, validator => validator
+                                                                          .CreditCard("Should be valid credit card no")
+                                                                    .ToResult())
+              .ForNumberProperty(m => m.RequiredProperty, validator => validator
+                                                                          .Required((m, r) => r == 1, "Should be valid credit card no")
+                                                                    .ToResult())
+        .ToResult();
+ };
 
  var validateStringRulesTest = (validator: IValidator<StringRulesTest>) : ValidationResult => {
   return validator
@@ -203,6 +258,31 @@ describe('Validator Tests', () => {
     model.Contains = "For test purpose";
 
     var validationResult = new Validator(model).Validate(validateStringRulesTest); 
+    
+    expect(validationResult.IsValid).toBeTruthy();    
+  });
+
+  it('NumberRulesTest should have no validation errors - Sync', () => {
+    var model = new NumberRulesTest();
+    
+    model.IsNumberEqual = 1;
+    model.IsNumberNotEqual = 0;
+    model.IsNumberLessThan = 0;
+    model.IsNumberLessThanOrEqual = 1;
+    model.IsNumberGreaterThan = 2;
+    model.IsNumberGreaterThanOrEqual = 1;
+    
+    model.IsNumberEqualProperty = 1;
+    model.IsNumberNotEqualProperty = 2;
+    model.IsNumberLessThanProperty = 0;
+    model.IsNumberLessThanOrEqualProperty = 1;
+    model.IsNumberGreaterThanProperty = 2;
+    model.IsNumberGreaterThanOrEqualProperty = 1;
+
+    model.CreditCardProperty = 371449635398431;
+    model.RequiredProperty = 1;
+
+    var validationResult = new Validator(model).Validate(validateNumberRulesTest); 
     
     expect(validationResult.IsValid).toBeTruthy();    
   });
