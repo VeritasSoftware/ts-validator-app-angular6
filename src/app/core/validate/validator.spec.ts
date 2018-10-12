@@ -86,7 +86,19 @@ class Employee {
 }
 
  class StringRulesTestProperty {
-  StringRulesTest: StringRulesTest;
+  //StringRulesTest: StringRulesTest;
+
+  IsLowercase: string;
+  IsUppercase: string;
+  IsMixedcase: string;
+  IsGuid: string;
+  IsBase64: string;
+  IsUrl: string;
+  IsCountryCode: string;
+  IsNumeric: string;
+  IsAlpha: string;
+  IsAlphaNumeric: string;
+  Contains: string;
  }
  
  var validateDateRulesTest = (validator: IValidator<DateRulesTest>) : ValidationResult => {
@@ -178,7 +190,39 @@ class Employee {
 
  var validateStringRulesTestProperty = (validator: IValidator<StringRulesTestProperty>) : ValidationResult => {
    return validator
-                .ForType(m => m.StringRulesTest, validateStringRulesTest)
+                .ForStringProperty(m => m.IsAlpha, validator => validator
+                                                              .IsAlpha("Should be alpha")
+                                                        .ToResult())
+                .ForStringProperty(m => m.IsNumeric, validator => validator
+                                                              .IsNumeric("Should be numeric")
+                                                        .ToResult())                                                        
+                .ForStringProperty(m => m.IsAlphaNumeric, validator => validator
+                                                              .IsAlphaNumeric("Should be alpha numeric")
+                                                        .ToResult())
+                .ForStringProperty(m => m.IsUppercase, validator => validator
+                                                              .IsUppercase("Should be upper case")
+                                                        .ToResult()) 
+                .ForStringProperty(m => m.IsLowercase, validator => validator
+                                                              .IsLowercase("Should be lower case")
+                                                        .ToResult()) 
+                .ForStringProperty(m => m.IsMixedcase, validator => validator
+                                                              .IsMixedcase("Should be mixed case")
+                                                        .ToResult())
+                .ForStringProperty(m => m.IsGuid, validator => validator
+                                                              .IsGuid("Should be guid")
+                                                        .ToResult())
+                .ForStringProperty(m => m.IsBase64, validator => validator
+                                                              .IsBase64("Should be base64")
+                                                        .ToResult()) 
+                .ForStringProperty(m => m.IsUrl, validator => validator
+                                                              .IsUrl("Should be url")
+                                                        .ToResult())  
+                .ForStringProperty(m => m.IsCountryCode, validator => validator
+                                                              .IsCountryCode("Should be country code")
+                                                        .ToResult())
+                .ForStringProperty(m => m.Contains, validator => validator
+                                                              .Contains("test", "Should contain test")
+                                                        .ToResult())                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
         .ToResult();
  };
 
@@ -251,43 +295,9 @@ describe('Validator Tests', () => {
     
   });
 
-  it('Employee should have no validation errors - Sync', () => {
-    var model = new Employee();
-    model.Name = "John Doe";
-
-    model.Password = "sD4A3";
-    model.PreviousPasswords = new Array<string>()     
-    model.PreviousPasswords.push("sD4A");
-    model.PreviousPasswords.push("sD4A1");
-    model.PreviousPasswords.push("sD4A2");
-
-    var expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate());
-
-
-    model.CreditCards = new Array<CreditCard>();
-    var masterCard = new CreditCard();
-    masterCard.Number = 5105105105105100;
-    masterCard.Name = "John Doe"
-    masterCard.ExpiryDate = expiryDate;
-    var amexCard = new CreditCard();
-    amexCard.Number = 371449635398431;
-    amexCard.Name = "John Doe"
-    amexCard.ExpiryDate = expiryDate;
-    model.CreditCards.push(masterCard);
-    model.CreditCards.push(amexCard);
-
-    model.Super = new Super();
-    model.Super.Name = "XYZ Super Fund";
-    model.Super.Code = "XY1234";
-
-    model.Email = "john.doe@xyx.com";
-
-    var validationResult = new Validator(model).Validate(validateEmployeeRules); 
-    
-    expect(validationResult.IsValid).toBeTruthy();    
-  });
-
+  /**************************************/
+  /* RuleSet validators unit test cases */
+  /**************************************/
   it('StringRulesTest should have no validation errors - Sync', () => {
     var model = new StringRulesTest();
     
@@ -359,25 +369,61 @@ describe('Validator Tests', () => {
 
   it('StringRulesTestProperty should have no validation errors - Sync', () => {
     var model = new StringRulesTestProperty();
-
-    model.StringRulesTest = new StringRulesTest();
     
-    model.StringRulesTest.IsLowercase = "ayb";
-    model.StringRulesTest.IsUppercase = "AHY";
-    model.StringRulesTest.IsMixedcase = "arT";
-    model.StringRulesTest.IsGuid = "7e070f9a-e46c-4657-b12f-8e50a9a1429f";
-    model.StringRulesTest.IsBase64 = "VGhpcyBpcyBhIHRlc3Q=";
-    model.StringRulesTest.IsUrl = "https://nortonsafe.search.ask.com/web?chn=32430&cmpgn=&doi=2018-03-03&geo=AU&guid=A1D1CC2B-4476-4247-AC22-F1695C86CC52&locale=en_AU&o=APN11908&p2=%5EET%5Ecd20au%5Edirect&prt=NSBU&trackId=direct&ver=22.10.0.85&tpr=2&enc=2&q=PVEBDevK0oZq4h-WvUP1_kRpuMFkYmfb60viD1qkqjYFCVU3oPcBSgbbFhTZI3N3qFNptWm6p8q-uCzQ5qr4zlZpT6qq5JI0oSoAwg152MgBxAXu8KKMG6hZZGq-r1bmGWiB0o1qSokuyiBrpdBqM5H2Cxf0B56PXqc7I2MDU4Ksb648wAzLsHiiCjRKZgcMiQKjpS52xFvKP3YqnhDP6ecN-Y9rJp6sBx4spoNjQFaaOvzwHItON7JIoRI_SJn3ZnIVft8tDiTMNVf9DK0L937HhHm_TQWNFWnCrwVKembBx1nvQVQUHXd7-h5K1KBBgRUBF3d4AInt0zx2-3h_fA&ts=1537580232048";
-    model.StringRulesTest.IsCountryCode = "AU";
-    model.StringRulesTest.IsNumeric = "456";
-    model.StringRulesTest.IsAlpha = "aZ";
-    model.StringRulesTest.IsAlphaNumeric = "aB9";
-    model.StringRulesTest.Contains = "For test purpose";
+    model.IsLowercase = "ayb";
+    model.IsUppercase = "AHY";
+    model.IsMixedcase = "arT";
+    model.IsGuid = "7e070f9a-e46c-4657-b12f-8e50a9a1429f";
+    model.IsBase64 = "VGhpcyBpcyBhIHRlc3Q=";
+    model.IsUrl = "https://nortonsafe.search.ask.com/web?chn=32430&cmpgn=&doi=2018-03-03&geo=AU&guid=A1D1CC2B-4476-4247-AC22-F1695C86CC52&locale=en_AU&o=APN11908&p2=%5EET%5Ecd20au%5Edirect&prt=NSBU&trackId=direct&ver=22.10.0.85&tpr=2&enc=2&q=PVEBDevK0oZq4h-WvUP1_kRpuMFkYmfb60viD1qkqjYFCVU3oPcBSgbbFhTZI3N3qFNptWm6p8q-uCzQ5qr4zlZpT6qq5JI0oSoAwg152MgBxAXu8KKMG6hZZGq-r1bmGWiB0o1qSokuyiBrpdBqM5H2Cxf0B56PXqc7I2MDU4Ksb648wAzLsHiiCjRKZgcMiQKjpS52xFvKP3YqnhDP6ecN-Y9rJp6sBx4spoNjQFaaOvzwHItON7JIoRI_SJn3ZnIVft8tDiTMNVf9DK0L937HhHm_TQWNFWnCrwVKembBx1nvQVQUHXd7-h5K1KBBgRUBF3d4AInt0zx2-3h_fA&ts=1537580232048";
+    model.IsCountryCode = "AU";
+    model.IsNumeric = "456";
+    model.IsAlpha = "aZ";
+    model.IsAlphaNumeric = "aB9";
+    model.Contains = "For test purpose";
 
     var validationResult = new Validator(model).Validate(validateStringRulesTestProperty); 
     
     expect(validationResult.IsValid).toBeTruthy();    
-  });  
+  }); 
+  /**************************************/
+
+  it('Employee should have no validation errors - Sync', () => {
+    var model = new Employee();
+    model.Name = "John Doe";
+
+    model.Password = "sD4A3";
+    model.PreviousPasswords = new Array<string>()     
+    model.PreviousPasswords.push("sD4A");
+    model.PreviousPasswords.push("sD4A1");
+    model.PreviousPasswords.push("sD4A2");
+
+    var expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate());
+
+
+    model.CreditCards = new Array<CreditCard>();
+    var masterCard = new CreditCard();
+    masterCard.Number = 5105105105105100;
+    masterCard.Name = "John Doe"
+    masterCard.ExpiryDate = expiryDate;
+    var amexCard = new CreditCard();
+    amexCard.Number = 371449635398431;
+    amexCard.Name = "John Doe"
+    amexCard.ExpiryDate = expiryDate;
+    model.CreditCards.push(masterCard);
+    model.CreditCards.push(amexCard);
+
+    model.Super = new Super();
+    model.Super.Name = "XYZ Super Fund";
+    model.Super.Code = "XY1234";
+
+    model.Email = "john.doe@xyx.com";
+
+    var validationResult = new Validator(model).Validate(validateEmployeeRules); 
+    
+    expect(validationResult.IsValid).toBeTruthy();    
+  }); 
 
   it('Accountant should have no validation errors - Sync', () => {    
     var accountant = new Accountant();
