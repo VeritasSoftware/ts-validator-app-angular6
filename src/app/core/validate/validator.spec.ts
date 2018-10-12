@@ -46,6 +46,7 @@ class Employee {
  }
 
  class DateRulesTest {
+   IsDateOn: Date;
    IsDateAfter: Date;
    IsDateOnOrAfter: Date;
    IsDateBefore: Date;
@@ -53,6 +54,15 @@ class Employee {
    IsDateBetweenInclusive: Date;
    IsDateBetweenExclusive: Date;
    IsDateLeapYear: Date
+
+   IsDateOnProperty: Date;
+   IsDateAfterProperty: Date;
+   IsDateOnOrAfterProperty: Date;
+   IsDateBeforeProperty: Date;
+   IsDateOnOrBeforeProperty: Date;
+   IsDateBetweenInclusiveProperty: Date;
+   IsDateBetweenExclusiveProperty: Date;
+   IsDateLeapYearProperty: Date
  }
 
  class NumberRulesTest {
@@ -77,7 +87,43 @@ class Employee {
 
  class StringRulesTestProperty {
   StringRulesTest: StringRulesTest;
- }  
+ }
+ 
+ var validateDateRulesTest = (validator: IValidator<DateRulesTest>) : ValidationResult => {
+  var today = new Date('2018/10/15');
+  var todayPlusTen = new Date('2018/10/25');
+
+   return validator
+              .IsDateOn(m => m.IsDateOn, today, "Should be on")
+              .IsDateAfter(m => m.IsDateAfter, today, "Should be on or after")
+              .IsDateOnOrAfter(m => m.IsDateOnOrAfter, today, "Should be on or after")
+              .IsDateBefore(m => m.IsDateBefore, today, "Should be on or after")
+              .IsDateOnOrBefore(m => m.IsDateOnOrBefore, today, "Should be on or after")
+              .IsDateBetween(m => m.IsDateBetweenExclusive, today, todayPlusTen, false, "Should be exclusive between")
+              .IsDateBetween(m => m.IsDateBetweenInclusive, today, todayPlusTen, true, "Should be inclusive between")
+              .ForDateProperty(m => m.IsDateOnProperty, validator => validator
+                                                                          .IsDateOn(today, "Should be on")
+                                                                    .ToResult()) 
+              .ForDateProperty(m => m.IsDateAfterProperty, validator => validator
+                                                                          .IsDateAfter(today, "Should be on")
+                                                                    .ToResult())
+              .ForDateProperty(m => m.IsDateOnOrAfterProperty, validator => validator
+                                                                          .IsDateOnOrAfter(today, "Should be on")
+                                                                    .ToResult())
+              .ForDateProperty(m => m.IsDateBeforeProperty, validator => validator
+                                                                          .IsDateBefore(today, "Should be on")
+                                                                    .ToResult())
+              .ForDateProperty(m => m.IsDateOnOrBeforeProperty, validator => validator
+                                                                          .IsDateOnOrBefore(today, "Should be on")
+                                                                    .ToResult())
+              .ForDateProperty(m => m.IsDateBetweenExclusiveProperty, validator => validator
+                                                                        .IsDateBetween(today, todayPlusTen, false, "Should be exclusive between")
+                                                                    .ToResult())
+              .ForDateProperty(m => m.IsDateBetweenInclusiveProperty, validator => validator
+                                                                        .IsDateBetween(today, todayPlusTen, true, "Should be inclusve between")
+                                                                  .ToResult())
+.ToResult();
+ };
 
  var validateNumberRulesTest = (validator: IValidator<NumberRulesTest>) : ValidationResult => {
    return validator
@@ -261,6 +307,30 @@ describe('Validator Tests', () => {
     
     expect(validationResult.IsValid).toBeTruthy();    
   });
+
+  it('DateRulesTest should have no validation errors - Sync', () => {
+    var model = new DateRulesTest();     
+
+    model.IsDateOn = new Date('2018/10/15');
+    model.IsDateAfter = new Date('2018/10/16');
+    model.IsDateOnOrAfter = new Date('2018/10/15');
+    model.IsDateBefore = new Date('2018/10/14');
+    model.IsDateOnOrBefore = new Date('2018/10/15');
+    model.IsDateBetweenExclusive = new Date('2018/10/16'); 
+    model.IsDateBetweenInclusive = new Date('2018/10/15'); 
+
+    model.IsDateOnProperty = new Date('2018/10/15');
+    model.IsDateAfterProperty = new Date('2018/10/16');
+    model.IsDateOnOrAfterProperty = new Date('2018/10/15');
+    model.IsDateBeforeProperty = new Date('2018/10/14');
+    model.IsDateOnOrBeforeProperty = new Date('2018/10/15');
+    model.IsDateBetweenExclusiveProperty = new Date('2018/10/16'); 
+    model.IsDateBetweenInclusiveProperty = new Date('2018/10/15');
+
+    var validationResult = new Validator(model).Validate(validateDateRulesTest); 
+    
+    expect(validationResult.IsValid).toBeTruthy();    
+  });  
 
   it('NumberRulesTest should have no validation errors - Sync', () => {
     var model = new NumberRulesTest();
