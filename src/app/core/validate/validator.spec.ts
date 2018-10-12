@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-// import { IValidator } from './ivalidator';
-// import { Validator } from './validator';
-// import { ValidationResult } from './validation-result';
+import { IValidator } from './ivalidator';
+import { Validator } from './validator';
+import { ValidationResult } from './validation-result';
 
-import { IValidator, Validator, ValidationResult } from '../../../../../ts.validator/dist';
+//import { IValidator, Validator, ValidationResult } from '../../../../../ts.validator/dist';
 //import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 class Employee {
@@ -86,8 +86,6 @@ class Employee {
 }
 
  class StringRulesTestProperty {
-  //StringRulesTest: StringRulesTest;
-
   IsLowercase: string;
   IsUppercase: string;
   IsMixedcase: string;
