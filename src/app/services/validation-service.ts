@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-//import { IValidator, Validator, ValidationResult } from '../core/validate';
-import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
+import { IValidator, Validator, ValidationResult } from '../core/validate';
+//import { IValidator, Validator, ValidationResult } from '../../../../ts.validator/dist';
+//import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 import { IValidationService } from './ivalidation-service';
 import { User, RegisterUser, AgeGroupEnum } from '../models/models.component';
@@ -36,10 +37,10 @@ export class ValidationService implements IValidationService {
             .NotEmpty(m => m.Name, "Name cannot be empty", "Name:Empty")
             .NotEmpty(m => m.CreditCardNo, "Credit Card Number cannot be empty", "CreditCardNo:Empty")                    
             .If(m => m.CreditCardNo != "", validator =>
-                                                validator.For(m => m.CreditCardNo, creditCardValidator =>
-                                                                                        creditCardValidator.Length(13, 19, "Credit Card Number length is invalid", "CreditCardNo:LengthInvalid")
-                                                                                                           .CreditCard("Credit Card Number is invalid", "CreditCardNo:Invalid")
-                                                                                    .ToResult()
+                                                validator.ForStringProperty(m => m.CreditCardNo, creditCardValidator =>
+                                                                                creditCardValidator.Length(13, 19, "Credit Card Number length is invalid", "CreditCardNo:LengthInvalid")
+                                                                                                   .CreditCard("Credit Card Number is invalid", "CreditCardNo:Invalid")
+                                                                            .ToResult()
                                                              )                                                                
                                             .ToResult())
             .NotEmpty(m => m.Id, "Id cannot be empty", "Id:Empty")
@@ -51,11 +52,11 @@ export class ValidationService implements IValidationService {
             .NotEmpty(m => m.ConfirmPassword, "Confirm Pwd cannot be empty", "ConfirmPassword:Empty") 
             .If(m => m.Password != "", validator =>
                                             validator.ForStringProperty(m => m.Password, passwordValidator => 
-                                                                passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid", "Password:InvalidStrength")
-                                                                                 .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3", "Password:LengthInvalid") 
-                                                                                 .Required((m, pwd) => pwd == m.ConfirmPassword, "Password and Confirm Password are not the same", "Password:ConfirmNotSame")
-                                                            .ToResult()
-                                                         )
+                                                        passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid", "Password:InvalidStrength")
+                                                                            .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3", "Password:LengthInvalid") 
+                                                                            .Required((m, pwd) => pwd == m.ConfirmPassword, "Password and Confirm Password are not the same", "Password:ConfirmNotSame")
+                                                    .ToResult()
+                                                    )
                                       .ToResult())
             .For(m => m.AgeGroup, ageGroupValidator => ageGroupValidator
                                         .Required((m, ageGroup) => ageGroup != AgeGroupEnum.None, "Select Age Group", "AgeGroup.Empty")
