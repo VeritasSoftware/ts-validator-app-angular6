@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IValidator } from './ivalidator';
-import { Validator } from './validator';
-import { ValidationResult } from './validation-result';
+// import { IValidator } from './ivalidator';
+// import { Validator } from './validator';
+// import { ValidationResult } from './validation-result';
 
-//import { IValidator, Validator, ValidationResult } from '../../../../../ts.validator/dist';
+import { IValidator, Validator, ValidationResult } from '../../../../../ts.validator/dist';
 //import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 class Employee {
@@ -21,7 +21,7 @@ class Employee {
  }
  
  class CreditCard {
-   Number: number;
+   Number: string;
    Name: string;
    ExpiryDate: Date;
  }
@@ -43,6 +43,7 @@ class Employee {
    IsAlpha: string;
    IsAlphaNumeric: string;
    Contains: string;
+   CreditCard: string;
  }
 
  class DateRulesTest {
@@ -80,8 +81,6 @@ class Employee {
     IsNumberGreaterThanProperty: Number;
     IsNumberGreaterThanOrEqualProperty: Number;
 
-    CreditCardProperty: Number;
-
     RequiredProperty: Number;
 }
 
@@ -97,6 +96,7 @@ class Employee {
   IsAlpha: string;
   IsAlphaNumeric: string;
   Contains: string;
+  CreditCard: string;
  }
  
  var validateDateRulesTest = (validator: IValidator<DateRulesTest>) : ValidationResult => {
@@ -160,10 +160,7 @@ class Employee {
                                                                     .ToResult())                                                                    
               .ForNumberProperty(m => m.IsNumberGreaterThanOrEqualProperty, validator => validator
                                                                           .IsNumberGreaterThanOrEqual(1, "Should be greater than or equal")
-                                                                    .ToResult())
-              .ForNumberProperty(m => m.CreditCardProperty, validator => validator
-                                                                          .CreditCard("Should be valid credit card no")
-                                                                    .ToResult())
+                                                                    .ToResult())              
               .ForNumberProperty(m => m.RequiredProperty, validator => validator
                                                                           .Required((m, r) => r == 1, "Should be valid credit card no")
                                                                     .ToResult())
@@ -220,6 +217,9 @@ class Employee {
                                                         .ToResult())
                 .ForStringProperty(m => m.Contains, validator => validator
                                                               .Contains("test", "Should contain test")
+                                                        .ToResult())
+                .ForStringProperty(m => m.CreditCard, validator => validator
+                                                              .CreditCard("Should be a valid credit number")
                                                         .ToResult())                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
         .ToResult();
  };
@@ -242,7 +242,7 @@ class Employee {
             .NotNull(m => m.Name, "Should not be null", "CreditCard.Name.Null")
             .NotNull(m => m.Number, "Should not be null", "CreditCard.Number.Null")
             .NotNull(m => m.ExpiryDate, "Should not be null", "CreditCard.ExpiryDate.Null")
-            .If(m => m.Name != null && m.Number > 0 && m.ExpiryDate != null, validator => validator 
+            .If(m => m.Name != null && m.ExpiryDate != null, validator => validator 
                                                           .NotEmpty(m => m.Name, "Should not be empty", "CreditCard.Name.Empty")
                                                           .CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
                                                           .IsDateOnOrAfter(m => m.ExpiryDate, new Date(), "Should be on or after today's date", "CreditCard.ExpiryDate.Invalid")
@@ -357,7 +357,6 @@ describe('Validator Tests', () => {
     model.IsNumberGreaterThanProperty = 2;
     model.IsNumberGreaterThanOrEqualProperty = 1;
 
-    model.CreditCardProperty = 371449635398431;
     model.RequiredProperty = 1;
 
     var validationResult = new Validator(model).Validate(validateNumberRulesTest); 
@@ -397,16 +396,14 @@ describe('Validator Tests', () => {
     model.PreviousPasswords.push("sD4A2");
 
     var expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate());
-
 
     model.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
-    masterCard.Number = 5105105105105100;
+    masterCard.Number = "5105105105105100";
     masterCard.Name = "John Doe"
     masterCard.ExpiryDate = expiryDate;
     var amexCard = new CreditCard();
-    amexCard.Number = 371449635398431;
+    amexCard.Number = "371449635398431";
     amexCard.Name = "John Doe"
     amexCard.ExpiryDate = expiryDate;
     model.CreditCards.push(masterCard);
@@ -440,11 +437,11 @@ describe('Validator Tests', () => {
 
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
-    masterCard.Number = 5105105105105100;
+    masterCard.Number = "5105105105105100";
     masterCard.Name = "John Doe"
     masterCard.ExpiryDate = expiryDate;
     var amexCard = new CreditCard();
-    amexCard.Number = 371449635398431;
+    amexCard.Number = "371449635398431";
     amexCard.Name = "John Doe";
     amexCard.ExpiryDate = expiryDate;
     accountant.CreditCards.push(masterCard);
@@ -477,11 +474,11 @@ describe('Validator Tests', () => {
 
     model.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
-    masterCard.Number = 5105105105105100;
+    masterCard.Number = "5105105105105100";
     masterCard.Name = "John Doe";
     masterCard.ExpiryDate = date;
     var amexCard = new CreditCard();
-    amexCard.Number = 371449635398431;
+    amexCard.Number = "371449635398431";
     amexCard.Name = "John Doe";
     amexCard.ExpiryDate = date;
     model.CreditCards.push(masterCard);
@@ -514,11 +511,11 @@ describe('Validator Tests', () => {
 
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
-    masterCard.Number = 5105105105105100;
+    masterCard.Number = "5105105105105100";
     masterCard.Name = "John Doe";
     masterCard.ExpiryDate = date;
     var amexCard = new CreditCard();
-    amexCard.Number = 371449635398431;
+    amexCard.Number = "371449635398431";
     amexCard.Name = "John Doe";
     amexCard.ExpiryDate = date;
     accountant.CreditCards.push(masterCard);
@@ -552,11 +549,11 @@ describe('Validator Tests', () => {
 
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
-    masterCard.Number = 5105105105105100;
+    masterCard.Number = "5105105105105100";
     masterCard.Name = "John Doe";
     masterCard.ExpiryDate = date;
     var amexCard = new CreditCard();
-    amexCard.Number = 371449635398431;
+    amexCard.Number = "371449635398431";
     amexCard.Name = "John Doe";
     amexCard.ExpiryDate = date;
     accountant.CreditCards.push(masterCard);
@@ -595,11 +592,11 @@ describe('Validator Tests', () => {
 
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
-    masterCard.Number = 5105105105105100;
+    masterCard.Number = "5105105105105100";
     masterCard.Name = "John Doe";
     masterCard.ExpiryDate = date;
     var amexCard = new CreditCard();
-    amexCard.Number = 371449635398431;
+    amexCard.Number = "371449635398431";
     amexCard.Name = "John Doe";
     amexCard.ExpiryDate = date;
     accountant.CreditCards.push(masterCard);
@@ -638,11 +635,11 @@ describe('Validator Tests', () => {
 
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
-    masterCard.Number = 5105105105105100;
+    masterCard.Number = "5105105105105100";
     masterCard.Name = "John Doe";
     masterCard.ExpiryDate = date;
     var amexCard = new CreditCard();
-    amexCard.Number = 371449635398431;
+    amexCard.Number = "371449635398431";
     amexCard.Name = "John Doe";
     amexCard.ExpiryDate = date;
     accountant.CreditCards.push(masterCard);
