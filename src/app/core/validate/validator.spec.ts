@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-// import { IValidator } from './ivalidator';
-// import { Validator } from './validator';
-// import { ValidationResult } from './validation-result';
+import { IValidator } from './ivalidator';
+import { Validator } from './validator';
+import { ValidationResult } from './validation-result';
 
-import { IValidator, Validator, ValidationResult } from '../../../../../ts.validator/dist';
+//import { IValidator, Validator, ValidationResult } from '../../../../../ts.validator/dist';
 //import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
 
 class Employee {
@@ -219,7 +219,7 @@ class Employee {
                                                               .Contains("test", "Should contain test")
                                                         .ToResult())
                 .ForStringProperty(m => m.CreditCard, validator => validator
-                                                              .CreditCard("Should be a valid credit number")
+                                                              .IsCreditCard("Should be a valid credit number")
                                                         .ToResult())                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
         .ToResult();
  };
@@ -244,7 +244,7 @@ class Employee {
             .NotNull(m => m.ExpiryDate, "Should not be null", "CreditCard.ExpiryDate.Null")
             .If(m => m.Name != null && m.ExpiryDate != null, validator => validator 
                                                           .NotEmpty(m => m.Name, "Should not be empty", "CreditCard.Name.Empty")
-                                                          .CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
+                                                          .IsCreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
                                                           .IsDateOnOrAfter(m => m.ExpiryDate, new Date(), "Should be on or after today's date", "CreditCard.ExpiryDate.Invalid")
                                                       .ToResult())
         .ToResult();
