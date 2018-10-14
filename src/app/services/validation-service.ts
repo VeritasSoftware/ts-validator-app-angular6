@@ -39,7 +39,7 @@ export class ValidationService implements IValidationService {
             .If(m => m.CreditCardNo != "", validator =>
                                                 validator.ForStringProperty(m => m.CreditCardNo, creditCardValidator =>
                                                                                 creditCardValidator.Length(13, 19, "Credit Card Number length is invalid", "CreditCardNo:LengthInvalid")
-                                                                                                   .CreditCard("Credit Card Number is invalid", "CreditCardNo:Invalid")
+                                                                                                   .IsCreditCard("Credit Card Number is invalid", "CreditCardNo:Invalid")
                                                                             .ToResult()
                                                              )                                                                
                                             .ToResult())
