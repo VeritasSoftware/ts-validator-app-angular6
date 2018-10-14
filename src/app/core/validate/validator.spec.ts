@@ -224,7 +224,7 @@ class Employee {
         .ToResult();
  };
 
- var validateSuperRules =  (validator: IValidator<Super>) : ValidationResult => {
+ let validateSuperRules =  (validator: IValidator<Super>) : ValidationResult => {
   return validator
             .NotNull(m => m.Name, "Should not be null", "Super.Name.Null")
             .NotNull(m => m.Code, "Should not be null", "Super.Code.Null")
@@ -237,7 +237,7 @@ class Employee {
 
  var today = new Date();
 
- var validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {  
+ let validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {  
   return validator
             .NotNull(m => m.Name, "Should not be null", "CreditCard.Name.Null")
             .NotNull(m => m.Number, "Should not be null", "CreditCard.Number.Null")
@@ -250,7 +250,7 @@ class Employee {
         .ToResult();
  };
 
- var validateEmployeeRules = (validator: IValidator<Employee>) : ValidationResult => {
+ let validateEmployeeRules = (validator: IValidator<Employee>) : ValidationResult => {
     return validator                              
           .NotEmpty(m => m.Name, "Should not be empty", "Employee.Name.Empty")
           .NotNull(m => m.CreditCards, "Should not be null", "CreditCard.Null")
@@ -275,7 +275,7 @@ class Employee {
     .ToResult();
  };
 
- var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
+ let validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
   return validator
             .NotEmpty(m => m.Code, "Should not be empty")
         .ToResult();
@@ -386,7 +386,7 @@ describe('Validator Tests', () => {
   /**************************************/
 
   it('Employee should have no validation errors - Sync', () => {
-    var model = new Employee();
+    let model = new Employee();
     model.Name = "John Doe";
 
     model.Password = "sD4A3";
@@ -399,6 +399,8 @@ describe('Validator Tests', () => {
 
     model.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
+    //Fails Luhn
+    //masterCard.Number = "5195195195195199";
     masterCard.Number = "5105105105105100";
     masterCard.Name = "John Doe"
     masterCard.ExpiryDate = expiryDate;
@@ -415,7 +417,7 @@ describe('Validator Tests', () => {
 
     model.Email = "john.doe@xyx.com";
 
-    var validationResult = new Validator(model).Validate(validateEmployeeRules); 
+    let validationResult = new Validator(model).Validate(validateEmployeeRules); 
     
     expect(validationResult.IsValid).toBeTruthy();    
   }); 
